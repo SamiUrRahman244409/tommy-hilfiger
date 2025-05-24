@@ -1,0 +1,105 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import Image from "next/image"
+import { Search, ShoppingBag, User } from "lucide-react"
+
+export function Header() {
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  const slides = [
+    "40 - 70% Off Sitewide, Plus an Extra 25% Off $175+ or 15% Off $125+ for Hilfiger Club Members",
+    "Free shipping on orders over $100 Details",
+  ]
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev === 0 ? 1 : 0))
+    }, 5000)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
+
+  return (
+    <>
+      {/* Promo Banner */}
+      <div className="bg-black text-white text-xs py-1 px-4 text-center overflow-hidden">
+        <div
+          className="transition-transform duration-500 ease-in-out flex"
+          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+        >
+          <div className="py-1 min-w-full flex-shrink-0">
+            {slides[0]}
+            <span className="mx-2 font-medium">
+              <a href="/menu" className="underline mx-1">
+                Men
+              </a>
+              <a href="/menu" className="underline mx-1">
+                Women
+              </a>
+              <a href="/menu" className="underline mx-1">
+                Kids
+              </a>
+              <a href="/menu" className="underline mx-1">
+                Sale
+              </a>
+            </span>
+          </div>
+          <div className="py-1 min-w-full flex-shrink-0">
+            {slides[1]}
+            <a href="#" className="underline mx-1">
+              Details
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <header className="border-b py-4 px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-3 items-center">
+          <div className="flex items-center">
+            <a href="#" className="flex items-center">
+              <Image
+                src="https://usa.tommy.com/on/demandware.static/-/Sites-PVHTHUS-Library/default/dw6244e61b/logo/Logo.svg"
+                alt="TOMMY HILFIGER"
+                width={200}
+                height={40}
+                className="h-10"
+              />
+            </a>
+          </div>
+          <nav className="hidden md:flex items-center justify-center space-x-6">
+            <a href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
+              New
+            </a>
+            <a href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
+              Men
+            </a>
+            <a href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
+              Women
+            </a>
+            <a href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
+              Shoes & Accessories
+            </a>
+            <a href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
+              Sale
+            </a>
+          </nav>
+          <div className="flex items-center justify-end space-x-4">
+            <button aria-label="Search">
+              <Search className="h-5 w-5" />
+            </button>
+            <button aria-label="Account">
+              <User className="h-5 w-5" />
+            </button>
+            <button aria-label="Cart">
+              <ShoppingBag className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+      </header>
+    </>
+  )
+}
