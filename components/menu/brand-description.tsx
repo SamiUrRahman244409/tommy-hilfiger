@@ -3,6 +3,7 @@
 export function BrandDescription() {
   return (
     <div className="w-full py-8 border-t border-gray-200">
+      <h3 className="text-lg font-semibold mb-4">About Tommy Hilfiger</h3>
       <p className="text-gray-700 leading-relaxed">
         Discover the essence of American style with Tommy Hilfiger's premium collection of men's apparel and
         accessories. This carefully curated selection combines classic and contemporary looks, featuring everything from

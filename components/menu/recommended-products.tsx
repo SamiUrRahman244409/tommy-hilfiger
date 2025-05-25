@@ -42,12 +42,14 @@ export function RecommendedProducts({
             <button
               onClick={() => scroll("left")}
               className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors"
+              aria-label="Scroll to previous recommended products"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
             <button
               onClick={() => scroll("right")}
               className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-100 transition-colors"
+              aria-label="Scroll to next recommended products"
             >
               <ChevronRight className="h-5 w-5" />
             </button>

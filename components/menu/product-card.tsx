@@ -106,12 +106,14 @@ export function ProductCard({
                   <button
                     className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-1 shadow-sm z-20 transition-opacity duration-200 hover:bg-white"
                     onClick={(e) => handleImageNavigation("prev", e)}
+                    aria-label={`View previous image of ${product.name}`}
                   >
                     <ChevronLeft className="h-4 w-4" />
                   </button>
                   <button
                     className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 rounded-full p-1 shadow-sm z-20 transition-opacity duration-200 hover:bg-white"
                     onClick={(e) => handleImageNavigation("next", e)}
+                    aria-label={`View next image of ${product.name}`}
                   >
                     <ChevronRight className="h-4 w-4" />
                   </button>
@@ -145,9 +147,9 @@ export function ProductCard({
       </div>
 
       <div className="mt-2">
-        <h3 className="text-sm font-medium hover:underline cursor-pointer" onClick={handleCardClick}>
+        <h2 className="text-sm font-medium hover:underline cursor-pointer" onClick={handleCardClick}>
           {product.name}
-        </h3>
+        </h2>
         <div className="flex items-center mt-1">
           <span className="text-sm line-through mr-2">${product.price.toFixed(2)}</span>
           <span className="text-sm font-medium">${product.salePrice.toFixed(2)}</span>
