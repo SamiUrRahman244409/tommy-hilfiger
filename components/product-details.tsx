@@ -124,9 +124,7 @@ export function ProductDetails({ productImages, currentImage, setCurrentImage }:
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-sm">Size</span>
-            <a href="#" className="text-sm hover:underline">
-              Find My Size
-            </a>
+            <span className="text-sm">Find My Size</span>
           </div>
           <div className="grid grid-cols-4 gap-2">
             <button className="border py-2 text-center text-sm hover:border-black">XS</button>

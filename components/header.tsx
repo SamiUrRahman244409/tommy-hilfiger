@@ -58,16 +58,16 @@ export function Header() {
       </div>
 
       {/* Navigation */}
-      <header className="border-b px-6">
+      <header className="border-b py-4 px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-3 items-center">
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
               <Image
-                src="https://id-tgo-images.s3.ap-southeast-1.amazonaws.com/159/cms/2/TOMMY_HILFIGER.png"
+                src="https://usa.tommy.com/on/demandware.static/-/Sites-PVHTHUS-Library/default/dw6244e61b/logo/Logo.svg"
                 alt="TOMMY HILFIGER"
                 width={200}
-                height={100}
-                className="h-16 w-auto"
+                height={40}
+                className="h-10"
                 priority
               />
             </Link>

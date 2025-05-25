@@ -55,7 +55,7 @@ export function ProductSizeSelector({
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <span className="text-sm">Size: {selectedSize && <span className="font-medium">{selectedSize}</span>}</span>
-        <a className="text-sm">Find My Size</a>
+        <span className="text-sm">Find My Size</span>
       </div>
       <div className="grid grid-cols-4 gap-2">
         {sizeOptions.map((size) => (

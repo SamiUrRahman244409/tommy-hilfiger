@@ -27,7 +27,7 @@ export function ProductColorSelector() {
         <span className="text-sm">
           Color: <span className="font-medium">{selectedColor.name}</span>
         </span>
-        <a className="text-sm">View colors</a>
+        <span className="text-sm ">View colors</span>
       </div>
       <div className="flex space-x-2">
         {colorOptions.map((color) => (
