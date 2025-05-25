@@ -61,17 +61,17 @@ export function Header() {
       <header className="border-b py-4 px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-3 items-center">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center">
-              <Image
-                src="https://usa.tommy.com/on/demandware.static/-/Sites-PVHTHUS-Library/default/dw6244e61b/logo/Logo.svg"
-                alt="TOMMY HILFIGER"
-                width={200}
-                height={40}
-                className="h-10"
-                priority
-              />
-            </Link>
-          </div>
+  <Link href="/" className="flex items-center">
+    <Image
+      src="/images/tommy-hilfiger-logo.svg"  // local file from public folder
+      alt="TOMMY HILFIGER"
+      width={200}
+      height={40}
+      className="h-10"
+      priority
+    />
+  </Link>
+</div>
           <nav className="hidden md:flex items-center justify-center space-x-6">
             <Link href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
               New

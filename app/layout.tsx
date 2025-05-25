@@ -4,6 +4,9 @@ import type { Viewport } from "next"
 
 export const metadata = {
   title: "Tommy Hilfiger - Premium Fashion & Clothing | Official Store",
+  icons: {
+    icon: "/favicon.svg",
+  },
   description:
     "Shop the latest Tommy Hilfiger collection. Premium fashion, clothing, and accessories for men, women, and kids. Free shipping on orders over $100.",
   generator: "v0.dev",

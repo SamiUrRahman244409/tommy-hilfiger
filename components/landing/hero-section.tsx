@@ -2,20 +2,33 @@
 
 import { LazyImage } from "@/components/ui/lazy-image"
 import { Button } from "@/components/ui/button"
-import Link from 'next/link';
+import Link from 'next/link'
 
 export function HeroSection() {
   return (
     <section className="relative w-full h-screen mb-1">
+      {/* Mobile image: only shown on small screens */}
       <LazyImage
-        src="https://media.tommy.com/us/static/images/scheduled_marketing/2025/05/21_HP_PromoHero01_dt.jpg"
-        alt="Tommy Hilfiger Memorial Day Sale - Group of models wearing Tommy Hilfiger clothing"
+        src="https://media.tommy.com/us/static/images/scheduled_marketing/2025/05/21_HP_PromoHero01_mb.jpg"
+        alt="Tommy Hilfiger Memorial Day Sale - Mobile"
         width={1920}
         height={1080}
         aspectRatio="16/9"
         priority
         fill
-        className="w-full h-full"
+        className="w-full h-full block md:hidden"
+      />
+
+      {/* Desktop image: shown from md and up */}
+      <LazyImage
+        src="https://media.tommy.com/us/static/images/scheduled_marketing/2025/05/21_HP_PromoHero01_dt.jpg"
+        alt="Tommy Hilfiger Memorial Day Sale - Desktop"
+        width={1920}
+        height={1080}
+        aspectRatio="16/9"
+        priority
+        fill
+        className="w-full h-full hidden md:block"
       />
 
       <div className="absolute inset-x-0 top-0 md:pt-4 flex flex-col items-center text-white text-center max-w-md mx-auto">
@@ -43,8 +56,8 @@ export function HeroSection() {
             className="bg-transparent text-white hover:bg-white/20 border-white text-sm py-1 px-4 h-auto rounded-none"
           >
             <Link href="/menu" className="underline underline-offset-4 decoration-white/40">
-  Shop Men
-</Link>
+              Shop Men
+            </Link>
           </Button>
 
           <Button
@@ -53,8 +66,8 @@ export function HeroSection() {
             className="bg-transparent text-white hover:bg-white/20 border-white text-sm py-1 px-4 h-auto rounded-none"
           >
             <Link href="/menu" className="underline underline-offset-4 decoration-white/40">
-  Shop Women
-</Link>
+              Shop Women
+            </Link>
           </Button>
 
           <Button
@@ -63,8 +76,8 @@ export function HeroSection() {
             className="bg-transparent text-white hover:bg-white/20 border-white text-sm py-1 px-4 h-auto rounded-none"
           >
             <Link href="/menu" className="underline underline-offset-4 decoration-white/40">
-  Shop Sale
-</Link>
+              Shop Sale
+            </Link>
           </Button>
         </div>
       </div>

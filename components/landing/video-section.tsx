@@ -9,13 +9,10 @@ export function VideoSection() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Check network connection
     const checkConnection = () => {
-      // Check if Network Information API is supported
       if ("connection" in navigator) {
         const connection = (navigator as any).connection
 
-        // If connection is 3g or slower, show only image
         if (
           connection.effectiveType === "3g" ||
           connection.effectiveType === "2g" ||
@@ -26,7 +23,6 @@ export function VideoSection() {
           setShowVideo(true)
         }
       } else {
-        // Fallback: assume good connection if API not supported
         setShowVideo(true)
       }
       setIsLoading(false)
@@ -34,7 +30,6 @@ export function VideoSection() {
 
     checkConnection()
 
-    // Listen for connection changes
     if ("connection" in navigator) {
       const connection = (navigator as any).connection
       connection.addEventListener("change", checkConnection)
@@ -55,26 +50,53 @@ export function VideoSection() {
 
   return (
     <section className="relative w-full h-[80vh] min-h-[600px]">
-      {showVideo ? (
-        <LazyVideo
-          src="https://media.tommy.com/us/static/images/scheduled_marketing/video/20250521_HP_Tile05_Video_dt.mp4"
-          poster="https://media.tommy.com/us/static/images/scheduled_marketing/2025/05/21_HP_Tile05_Video_poster_dt.jpg"
-          aspectRatio="16/9"
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="w-full h-full"
-        />
-      ) : (
-        <Image
-          src="https://media.tommy.com/us/static/images/scheduled_marketing/2025/05/21_HP_Tile05_Video_poster_dt.jpg"
-          alt="Tommy Hilfiger Collection"
-          fill
-          className="object-cover"
-          priority
-        />
-      )}
+      {/* Mobile version */}
+      <div className="block md:hidden w-full h-full">
+        {showVideo ? (
+          <LazyVideo
+            src="https://media.tommy.com/us/static/images/scheduled_marketing/video/20250521_HP_Tile05_Video_mb.mp4"
+            poster="https://media.tommy.com/us/static/images/scheduled_marketing/2025/05/21_HP_Tile05_Video_poster_mb.jpg"
+            aspectRatio="16/9"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full"
+          />
+        ) : (
+          <Image
+            src="https://media.tommy.com/us/static/images/scheduled_marketing/2025/05/21_HP_Tile05_Video_poster_mb.jpg"
+            alt="Tommy Hilfiger Collection Mobile"
+            fill
+            className="object-cover"
+            priority
+          />
+        )}
+      </div>
+
+      {/* Desktop version */}
+      <div className="hidden md:block w-full h-full">
+        {showVideo ? (
+          <LazyVideo
+            src="https://media.tommy.com/us/static/images/scheduled_marketing/video/20250521_HP_Tile05_Video_dt.mp4"
+            poster="https://media.tommy.com/us/static/images/scheduled_marketing/2025/05/21_HP_Tile05_Video_poster_dt.jpg"
+            aspectRatio="16/9"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full"
+          />
+        ) : (
+          <Image
+            src="https://media.tommy.com/us/static/images/scheduled_marketing/2025/05/21_HP_Tile05_Video_poster_dt.jpg"
+            alt="Tommy Hilfiger Collection Desktop"
+            fill
+            className="object-cover"
+            priority
+          />
+        )}
+      </div>
     </section>
   )
 }

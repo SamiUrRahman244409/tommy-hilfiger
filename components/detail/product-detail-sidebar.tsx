@@ -292,12 +292,12 @@ export function ProductDetailSidebar({ isOpen, onClose, content }: ProductDetail
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center">
-              <img
-                src="https://usa.tommy.com/on/demandware.static/-/Sites-PVHTHUS-Library/default/dw6244e61b/logo/Logo.svg"
-                alt="Tommy Hilfiger"
-                className="h-6"
-              />
-            </div>
+  <img
+    src="/images/tommy-hilfiger-logo.svg"  // local file from public/images/
+    alt="Tommy Hilfiger"
+    className="h-6"
+  />
+</div>
             <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded-full transition-colors">
               <X className="h-5 w-5" />
             </button>

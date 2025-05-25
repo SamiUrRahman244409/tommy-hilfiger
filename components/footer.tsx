@@ -20,14 +20,14 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
           <div className="flex flex-col items-center justify-center">
             <div className="flex flex-col md:flex-row items-center justify-center mb-6 max-w-3xl mx-auto gap-0">
               <div className="text-center relative md:min-w-[200px] flex justify-center">
-                <Image
-                  src="https://media.tommy.com/us/static/images/scheduled_marketing/logos/HC_CLUB_LOGO_VERT_BLUE.png"
-                  alt="Hilfiger Club"
-                  width={130}
-                  height={110}
-                  className="h-auto w-auto max-w-[150px] mx-auto"
-                />
-              </div>
+  <Image
+    src="/images/hilfiger-club.svg"  // local file from public/images/
+    alt="Hilfiger Club"
+    width={130}
+    height={110}
+    className="h-auto w-auto max-w-[150px] mx-auto"
+  />
+</div>
               <div className="max-w-md">
                 <p className="text-sm mb-2 font-bold">Enter your email for VIP access</p>
                 <p className="text-sm mb-2">to sales and more exclusive perks</p>
@@ -237,14 +237,15 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
 
           <div className="mt-12 pt-8 border-t">
             <div className="flex justify-center mb-6">
-              <Image
-                src="https://usa.tommy.com/on/demandware.static/-/Sites-PVHTHUS-Library/default/dw6244e61b/logo/Logo.svg"
-                alt="TOMMY HILFIGER"
-                width={150}
-                height={30}
-                className="h-8"
-              />
-            </div>
+  <Image
+    src="/images/tommy-hilfiger-logo.svg"  // local file from public/images/
+    alt="TOMMY HILFIGER"
+    width={150}
+    height={30}
+    className="h-8"
+  />
+</div>
+
 
             <div className="flex flex-wrap justify-center text-xs space-x-2 mb-4">
               <Link href="#" className="hover:underline">
