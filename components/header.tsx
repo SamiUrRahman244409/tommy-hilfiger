@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Search, ShoppingBag, User } from "lucide-react"
+import Link from "next/link"
 
 export function Header() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -33,25 +34,25 @@ export function Header() {
           <div className="py-1 min-w-full flex-shrink-0">
             {slides[0]}
             <span className="mx-2 font-medium">
-              <a href="/menu" className="underline mx-1">
+              <Link href="/menu" className="underline mx-1">
                 Men
-              </a>
-              <a href="/menu" className="underline mx-1">
+              </Link>
+              <Link href="/menu" className="underline mx-1">
                 Women
-              </a>
-              <a href="/menu" className="underline mx-1">
+              </Link>
+              <Link href="/menu" className="underline mx-1">
                 Kids
-              </a>
-              <a href="/menu" className="underline mx-1">
+              </Link>
+              <Link href="/menu" className="underline mx-1">
                 Sale
-              </a>
+              </Link>
             </span>
           </div>
           <div className="py-1 min-w-full flex-shrink-0">
             {slides[1]}
-            <a href="#" className="underline mx-1">
+            <Link href="#" className="underline mx-1">
               Details
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -60,7 +61,7 @@ export function Header() {
       <header className="border-b py-4 px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-3 items-center">
           <div className="flex items-center">
-            <a href="#" className="flex items-center">
+            <Link href="/" className="flex items-center">
               <Image
                 src="https://usa.tommy.com/on/demandware.static/-/Sites-PVHTHUS-Library/default/dw6244e61b/logo/Logo.svg"
                 alt="TOMMY HILFIGER"
@@ -68,24 +69,24 @@ export function Header() {
                 height={40}
                 className="h-10"
               />
-            </a>
+            </Link>
           </div>
           <nav className="hidden md:flex items-center justify-center space-x-6">
-            <a href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
+            <Link href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
               New
-            </a>
-            <a href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
+            </Link>
+            <Link href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
               Men
-            </a>
-            <a href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
+            </Link>
+            <Link href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
               Women
-            </a>
-            <a href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
+            </Link>
+            <Link href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
               Shoes & Accessories
-            </a>
-            <a href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
+            </Link>
+            <Link href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
               Sale
-            </a>
+            </Link>
           </nav>
           <div className="flex items-center justify-end space-x-4">
             <button aria-label="Search">

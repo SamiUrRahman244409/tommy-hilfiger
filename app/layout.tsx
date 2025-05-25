@@ -1,10 +1,34 @@
 import type React from "react"
 import "@/app/globals.css"
+import type { Viewport } from "next"
 
 export const metadata = {
-  title: "Hilfiger 1985 Logo T-Shirt | Tommy Hilfiger",
-  description: "Shop the iconic Hilfiger 1985 Logo T-Shirt at Tommy Hilfiger. Free shipping on orders over $100.",
-    generator: 'v0.dev'
+  title: "Tommy Hilfiger - Premium Fashion & Clothing | Official Store",
+  description:
+    "Shop the latest Tommy Hilfiger collection. Premium fashion, clothing, and accessories for men, women, and kids. Free shipping on orders over $100.",
+  generator: "v0.dev",
+  keywords: "Tommy Hilfiger, fashion, clothing, premium, men, women, kids, accessories, official store",
+  authors: [{ name: "Tommy Hilfiger" }],
+  robots: "index, follow",
+  openGraph: {
+    title: "Tommy Hilfiger - Premium Fashion & Clothing",
+    description: "Shop the latest Tommy Hilfiger collection. Premium fashion, clothing, and accessories.",
+    type: "website",
+    locale: "en_US",
+    siteName: "Tommy Hilfiger",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tommy Hilfiger - Premium Fashion & Clothing",
+    description: "Shop the latest Tommy Hilfiger collection. Premium fashion, clothing, and accessories.",
+  },
+}
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
 }
 
 export default function RootLayout({
@@ -14,6 +38,23 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* DNS prefetch for external domains */}
+        <link rel="dns-prefetch" href="//grounded-confidence-41a8f2f2aa.strapiapp.com" />
+        <link rel="dns-prefetch" href="//grounded-confidence-41a8f2f2aa.media.strapiapp.com" />
+        <link rel="dns-prefetch" href="//media.tommy.com" />
+        <link rel="dns-prefetch" href="//usa.tommy.com" />
+        {/* Preconnect to critical domains */}
+        <link rel="preconnect" href="https://grounded-confidence-41a8f2f2aa.strapiapp.com" />
+        <link rel="preconnect" href="https://grounded-confidence-41a8f2f2aa.media.strapiapp.com" />
+        <link rel="preconnect" href="https://media.tommy.com" />
+        {/* Resource hints for performance */}
+        <link
+          rel="preload"
+          as="image"
+          href="https://media.tommy.com/us/static/images/scheduled_marketing/2025/05/21_HP_PromoHero01_dt.jpg"
+        />
+      </head>
       <body>{children}</body>
     </html>
   )

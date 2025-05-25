@@ -12,16 +12,16 @@ export function CategoryNavigation() {
           <h2 className="text-2xl font-bold text-center mb-6">Men</h2>
           <div className="flex justify-center space-x-8">
             <Link href="/menu" className="text-sm border-b-2 border-transparent hover:border-black pb-1">
-              Shoes
+              Men's Shoes
             </Link>
             <Link href="/menu" className="text-sm border-b-2 border-transparent hover:border-black pb-1">
-              Bags
+              Men's Bags
             </Link>
             <Link href="/menu" className="text-sm border-b-2 border-transparent hover:border-black pb-1">
-              Accessories
+              Men's Accessories
             </Link>
             <Link href="/menu" className="text-sm border-b-2 border-transparent hover:border-black pb-1">
-              Underwear
+              Men's Underwear
             </Link>
           </div>
         </div>
@@ -30,16 +30,16 @@ export function CategoryNavigation() {
           <h2 className="text-2xl font-bold text-center mb-6">Women</h2>
           <div className="flex justify-center space-x-8">
             <Link href="/menu" className="text-sm border-b-2 border-transparent hover:border-black pb-1">
-              Shoes
+              Women's Shoes
             </Link>
             <Link href="/menu" className="text-sm border-b-2 border-transparent hover:border-black pb-1">
-              Bags
+              Women's Bags
             </Link>
             <Link href="/menu" className="text-sm border-b-2 border-transparent hover:border-black pb-1">
-              Accessories
+              Women's Accessories
             </Link>
             <Link href="/menu" className="text-sm border-b-2 border-transparent hover:border-black pb-1">
-              Underwear
+              Women's Underwear
             </Link>
           </div>
         </div>
@@ -60,7 +60,7 @@ export function CategoryNavigation() {
           </div>
           <h3 className="text-lg font-medium mb-2">The Dress Shop</h3>
           <Link href="/menu" className="text-sm hover:underline">
-            Shop Now
+            Shop Women's Dresses Collection
           </Link>
         </div>
 
@@ -77,7 +77,7 @@ export function CategoryNavigation() {
           </div>
           <h3 className="text-lg font-medium mb-2">The Logo Shop</h3>
           <Link href="/menu" className="text-sm hover:underline">
-            Shop Now
+            Shop Tommy Hilfiger Logo Collection
           </Link>
         </div>
 
@@ -94,7 +94,7 @@ export function CategoryNavigation() {
           </div>
           <h3 className="text-lg font-medium mb-2">Butter Yellow</h3>
           <Link href="/menu" className="text-sm hover:underline">
-            Shop Now
+            Shop Butter Yellow Summer Collection
           </Link>
         </div>
 
@@ -111,7 +111,7 @@ export function CategoryNavigation() {
           </div>
           <h3 className="text-lg font-medium mb-2">Tommy Stories</h3>
           <Link href="/menu" className="text-sm hover:underline">
-            Learn More
+            Discover Tommy Hilfiger Brand Stories
           </Link>
         </div>
       </div>
