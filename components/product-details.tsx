@@ -5,6 +5,7 @@ import { ChevronRight, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import Link from 'next/link';
 import type { ProductImage } from "@/types"
 
 interface ProductDetailsProps {
@@ -67,17 +68,17 @@ export function ProductDetails({ productImages, currentImage, setCurrentImage }:
       <div className="space-y-6 sticky top-8 self-start">
         {/* Breadcrumbs */}
         <div className="flex items-center text-sm text-gray-500">
-          <a href="#" className="hover:underline">
-            Men
-          </a>
+          <span className="hover:underline cursor-pointer">
+  Men
+</span>
           <ChevronRight className="h-4 w-4 mx-1" />
-          <a href="#" className="hover:underline">
-            Clothing
-          </a>
+          <span className="hover:underline cursor-pointer">
+  Clothing
+</span>
           <ChevronRight className="h-4 w-4 mx-1" />
-          <a href="#" className="hover:underline">
-            Tops & Sweaters
-          </a>
+          <span className="hover:underline cursor-pointer">
+  Tops & Sweater
+</span>
         </div>
 
         {/* Product Title */}
@@ -104,9 +105,9 @@ export function ProductDetails({ productImages, currentImage, setCurrentImage }:
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-sm">Color: Optic White</span>
-            <a href="#" className="text-sm hover:underline">
-              View all colors
-            </a>
+            <span className="hover:underline cursor-pointer">
+  View all colors
+</span>
           </div>
           <div className="flex space-x-2">
             <button
@@ -136,9 +137,9 @@ export function ProductDetails({ productImages, currentImage, setCurrentImage }:
             <button className="border py-2 text-center text-sm hover:border-black">XXXL</button>
           </div>
           <div className="flex items-center justify-between">
-            <a href="#" className="text-sm hover:underline">
-              Size Guide
-            </a>
+            <span className="hover:underline cursor-pointer">
+  Size Guide
+</span>
             <span className="text-sm text-gray-500">Model is about 6'1" in size M.</span>
           </div>
         </div>

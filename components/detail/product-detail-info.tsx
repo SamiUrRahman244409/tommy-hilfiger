@@ -117,13 +117,13 @@ export function ProductDetailInfo({
         <div className="space-y-6 sticky top-8 self-start">
           {/* Breadcrumbs */}
           <div className="flex items-center text-sm text-gray-500">
-            <a href="#" className="hover:underline">
-              Men
-            </a>
+            <span className="hover:underline cursor-pointer">
+  Men
+</span>
             <ChevronRight className="h-4 w-4 mx-1" />
-            <a href="#" className="hover:underline">
-              Clothing
-            </a>
+            <span className="hover:underline cursor-pointer">
+  Clothing
+</span>
           </div>
 
           {/* Product Title */}

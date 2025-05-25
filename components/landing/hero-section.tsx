@@ -2,6 +2,7 @@
 
 import { LazyImage } from "@/components/ui/lazy-image"
 import { Button } from "@/components/ui/button"
+import Link from 'next/link';
 
 export function HeroSection() {
   return (
@@ -41,9 +42,9 @@ export function HeroSection() {
             variant="outline"
             className="bg-transparent text-white hover:bg-white/20 border-white text-sm py-1 px-4 h-auto rounded-none"
           >
-            <a href="/menu" className="underline underline-offset-4 decoration-white/40">
-              Shop Men
-            </a>
+            <Link href="/menu" className="underline underline-offset-4 decoration-white/40">
+  Shop Men
+</Link>
           </Button>
 
           <Button
@@ -51,9 +52,9 @@ export function HeroSection() {
             variant="outline"
             className="bg-transparent text-white hover:bg-white/20 border-white text-sm py-1 px-4 h-auto rounded-none"
           >
-            <a href="/menu" className="underline underline-offset-4 decoration-white/40">
-              Shop Women
-            </a>
+            <Link href="/menu" className="underline underline-offset-4 decoration-white/40">
+  Shop Women
+</Link>
           </Button>
 
           <Button
@@ -61,9 +62,9 @@ export function HeroSection() {
             variant="outline"
             className="bg-transparent text-white hover:bg-white/20 border-white text-sm py-1 px-4 h-auto rounded-none"
           >
-            <a href="/menu" className="underline underline-offset-4 decoration-white/40">
-              Shop Sale
-            </a>
+            <Link href="/menu" className="underline underline-offset-4 decoration-white/40">
+  Shop Sale
+</Link>
           </Button>
         </div>
       </div>
