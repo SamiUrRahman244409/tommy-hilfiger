@@ -1,12 +1,17 @@
 "use client"
 
+import type React from "react"
+
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Search, ShoppingBag, User } from "lucide-react"
 import Link from "next/link"
+import { useRouter, useSearchParams } from "next/navigation"
 
 export function Header() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const router = useRouter()
+  const searchParams = useSearchParams()
 
   const slides = [
     "40 - 70% Off Sitewide, Plus an Extra 25% Off $175+ or 15% Off $125+ for Hilfiger Club Members",
@@ -23,6 +28,11 @@ export function Header() {
     }
   }, [])
 
+  const handleNewOrSaleClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    router.push("/menu", { scroll: false })
+  }
+
   return (
     <>
       {/* Promo Banner */}
@@ -34,16 +44,16 @@ export function Header() {
           <div className="py-1 min-w-full flex-shrink-0">
             {slides[0]}
             <span className="mx-2 font-medium">
-              <Link href="/menu" className="underline mx-1">
+              <Link href="/menu?category=men" scroll={false} className="underline mx-1">
                 Men
               </Link>
-              <Link href="/menu" className="underline mx-1">
+              <Link href="/menu?category=women" scroll={false} className="underline mx-1">
                 Women
               </Link>
-              <Link href="/menu" className="underline mx-1">
+              <Link href="/menu" scroll={false} className="underline mx-1">
                 Kids
               </Link>
-              <Link href="/menu" className="underline mx-1">
+              <Link href="/menu" scroll={false} className="underline mx-1">
                 Sale
               </Link>
             </span>
@@ -61,33 +71,51 @@ export function Header() {
       <header className="border-b py-4 px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-3 items-center">
           <div className="flex items-center">
-  <Link href="/" className="flex items-center">
-    <Image
-      src="/images/tommy-hilfiger-logo.svg"  // local file from public folder
-      alt="TOMMY HILFIGER"
-      width={200}
-      height={40}
-      className="h-10"
-      priority
-    />
-  </Link>
-</div>
-          <nav className="hidden md:flex items-center justify-center space-x-6">
-            <Link href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
-              New
+            <Link href="/" scroll={false} className="flex items-center">
+              <Image
+                src="/images/tommy-hilfiger-logo.svg" // local file from public folder
+                alt="TOMMY HILFIGER"
+                width={200}
+                height={40}
+                className="h-10"
+                priority
+              />
             </Link>
-            <Link href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
+          </div>
+          <nav className="hidden md:flex items-center justify-center space-x-6">
+            <button
+              onClick={handleNewOrSaleClick}
+              className="text-sm font-medium hover:underline transition-all duration-200"
+            >
+              New
+            </button>
+            <Link
+              href="/menu?category=men"
+              scroll={false}
+              className="text-sm font-medium hover:underline transition-all duration-200"
+            >
               Men
             </Link>
-            <Link href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
+            <Link
+              href="/menu?category=women"
+              scroll={false}
+              className="text-sm font-medium hover:underline transition-all duration-200"
+            >
               Women
             </Link>
-            <Link href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
+            <Link
+              href="/menu?category=accessories"
+              scroll={false}
+              className="text-sm font-medium hover:underline transition-all duration-200"
+            >
               Shoes & Accessories
             </Link>
-            <Link href="/menu" className="text-sm font-medium hover:underline transition-all duration-200">
+            <button
+              onClick={handleNewOrSaleClick}
+              className="text-sm font-medium hover:underline transition-all duration-200"
+            >
               Sale
-            </Link>
+            </button>
           </nav>
           <div className="flex items-center justify-end space-x-4">
             <button aria-label="Search">

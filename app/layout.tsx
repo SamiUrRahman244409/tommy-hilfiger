@@ -1,6 +1,8 @@
 import type React from "react"
 import "@/app/globals.css"
 import type { Viewport } from "next"
+import { Header } from "@/components/header"
+import { Footer } from "@/components/footer"
 
 export const metadata = {
   title: "Tommy Hilfiger - Premium Fashion & Clothing | Official Store",
@@ -58,7 +60,13 @@ export default function RootLayout({
           href="https://media.tommy.com/us/static/images/scheduled_marketing/2025/05/21_HP_PromoHero01_dt.jpg"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <div className="min-h-screen flex flex-col">
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
+      </body>
     </html>
   )
 }

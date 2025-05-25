@@ -6,7 +6,6 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 
 interface FilterOption {
   name: string
-  count: number
 }
 
 interface FilterSection {
@@ -19,17 +18,31 @@ interface FilterSidebarProps {
   isOpen: boolean
   onClose: () => void
   activeFilter: string | null
-  onCategoryChange?: (category: string | null) => void
-  activeCategory?: string | null
+  onCategoryChange?: (categories: string[]) => void
+  selectedCategories?: string[]
+  onSizeChange?: (sizes: string[]) => void
+  selectedSizes?: string[]
+  onPriceChange?: (priceRanges: string[]) => void
+  selectedPriceRanges?: string[]
+  onClearAll?: () => void
 }
 
-export function FilterSidebar({ isOpen, onClose, activeFilter, onCategoryChange, activeCategory }: FilterSidebarProps) {
+export function FilterSidebar({
+  isOpen,
+  onClose,
+  activeFilter,
+  onCategoryChange,
+  selectedCategories = [],
+  onSizeChange,
+  selectedSizes = [],
+  onPriceChange,
+  selectedPriceRanges = [],
+  onClearAll,
+}: FilterSidebarProps) {
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     Category: false,
     Size: false,
-    Color: false,
     Price: false,
-    Fit: false,
   })
 
   // Reset expanded sections when the active filter changes
@@ -38,18 +51,14 @@ export function FilterSidebar({ isOpen, onClose, activeFilter, onCategoryChange,
       setExpandedSections({
         Category: activeFilter === "Category",
         Size: activeFilter === "Size",
-        Color: activeFilter === "Color",
         Price: activeFilter === "Price",
-        Fit: activeFilter === "Fit",
       })
     } else if (activeFilter === "All") {
       // Expand all sections when "All Filters" is clicked
       setExpandedSections({
         Category: true,
         Size: true,
-        Color: true,
         Price: true,
-        Fit: true,
       })
     }
   }, [activeFilter, isOpen])
@@ -62,64 +71,43 @@ export function FilterSidebar({ isOpen, onClose, activeFilter, onCategoryChange,
   }
 
   // Only show main categories
-  const categoryOptions: FilterOption[] = [
-    { name: "Men", count: 156 },
-    { name: "Women", count: 234 },
-    { name: "Accessories", count: 89 },
-  ]
+  const categoryOptions: FilterOption[] = [{ name: "Men" }, { name: "Women" }, { name: "Accessories" }]
 
-  const sizeOptions: FilterOption[] = [
-    { name: "XS", count: 120 },
-    { name: "S", count: 245 },
-    { name: "M", count: 356 },
-    { name: "L", count: 289 },
-    { name: "XL", count: 198 },
-    { name: "XXL", count: 87 },
-  ]
-
-  const colorOptions: FilterOption[] = [
-    { name: "Black", count: 234 },
-    { name: "White", count: 198 },
-    { name: "Blue", count: 156 },
-    { name: "Red", count: 89 },
-    { name: "Green", count: 67 },
-    { name: "Gray", count: 145 },
-  ]
+  const sizeOptions: FilterOption[] = [{ name: "S" }, { name: "M" }, { name: "L" }]
 
   const priceOptions: FilterOption[] = [
-    { name: "$0 - $25", count: 245 },
-    { name: "$25 - $50", count: 356 },
-    { name: "$50 - $100", count: 289 },
-    { name: "$100 - $200", count: 156 },
-    { name: "$200+", count: 78 },
-  ]
-
-  const fitOptions: FilterOption[] = [
-    { name: "Regular", count: 456 },
-    { name: "Slim", count: 234 },
-    { name: "Relaxed", count: 189 },
-    { name: "Oversized", count: 123 },
+    { name: "$0 - $25" },
+    { name: "$25 - $50" },
+    { name: "$50 - $100" },
+    { name: "$100 - $200" },
+    { name: "$200+" },
   ]
 
   const filterSections: FilterSection[] = [
     { title: "Category", options: categoryOptions },
     { title: "Size", options: sizeOptions },
-    { title: "Color", options: colorOptions },
     { title: "Price", options: priceOptions },
-    { title: "Fit", options: fitOptions },
   ]
 
-  const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({
-    Category: activeCategory ? [activeCategory] : [],
-    Size: [],
-    Color: [],
-    Price: [],
-    Fit: [],
-  })
+  const toggleCategoryFilter = (option: string) => {
+    if (onCategoryChange) {
+      const current = [...selectedCategories]
+      const categoryValue = option.toLowerCase()
+      const index = current.indexOf(categoryValue)
 
-  const toggleFilter = (section: string, option: string) => {
-    setSelectedFilters((prev) => {
-      const current = [...(prev[section] || [])]
+      if (index === -1) {
+        current.push(categoryValue)
+      } else {
+        current.splice(index, 1)
+      }
+
+      onCategoryChange(current)
+    }
+  }
+
+  const toggleSizeFilter = (option: string) => {
+    if (onSizeChange) {
+      const current = [...selectedSizes]
       const index = current.indexOf(option)
 
       if (index === -1) {
@@ -128,37 +116,63 @@ export function FilterSidebar({ isOpen, onClose, activeFilter, onCategoryChange,
         current.splice(index, 1)
       }
 
-      // Handle category selection
-      if (section === "Category" && onCategoryChange) {
-        if (current.length > 0) {
-          onCategoryChange(current[0].toLowerCase()) // Use the first selected category
-        } else {
-          onCategoryChange(null) // No category selected
-        }
+      onSizeChange(current)
+    }
+  }
+
+  const togglePriceFilter = (option: string) => {
+    if (onPriceChange) {
+      const current = [...selectedPriceRanges]
+      const index = current.indexOf(option)
+
+      if (index === -1) {
+        current.push(option)
+      } else {
+        current.splice(index, 1)
       }
 
-      return {
-        ...prev,
-        [section]: current,
-      }
-    })
+      onPriceChange(current)
+    }
+  }
+
+  const getFilterToggleFunction = (section: string) => {
+    switch (section) {
+      case "Category":
+        return toggleCategoryFilter
+      case "Size":
+        return toggleSizeFilter
+      case "Price":
+        return togglePriceFilter
+      default:
+        return () => {}
+    }
+  }
+
+  const isOptionSelected = (section: string, option: string) => {
+    switch (section) {
+      case "Category":
+        return selectedCategories.includes(option.toLowerCase())
+      case "Size":
+        return selectedSizes.includes(option)
+      case "Price":
+        return selectedPriceRanges.includes(option)
+      default:
+        return false
+    }
   }
 
   const clearAll = () => {
-    setSelectedFilters({
-      Category: [],
-      Size: [],
-      Color: [],
-      Price: [],
-      Fit: [],
-    })
-    if (onCategoryChange) {
-      onCategoryChange(null)
+    if (onClearAll) {
+      onClearAll()
     }
   }
 
   const getTotalSelectedItems = () => {
-    return Object.values(selectedFilters).reduce((total, filters) => total + filters.length, 0)
+    let total = 0
+    total += selectedCategories.length
+    total += selectedSizes.length
+    total += selectedPriceRanges.length
+    return total
   }
 
   return (
@@ -197,12 +211,10 @@ export function FilterSidebar({ isOpen, onClose, activeFilter, onCategoryChange,
                           <input
                             type="checkbox"
                             className="h-4 w-4 rounded border-gray-300 text-black focus:ring-black"
-                            checked={selectedFilters[section.title]?.includes(option.name) || false}
-                            onChange={() => toggleFilter(section.title, option.name)}
+                            checked={isOptionSelected(section.title, option.name)}
+                            onChange={() => getFilterToggleFunction(section.title)(option.name)}
                           />
-                          <span className="ml-2 text-sm">
-                            {option.name} ({option.count})
-                          </span>
+                          <span className="ml-2 text-sm">{option.name}</span>
                         </label>
                       ))}
                     </div>
@@ -214,7 +226,11 @@ export function FilterSidebar({ isOpen, onClose, activeFilter, onCategoryChange,
 
           <div className="p-4 border-t flex gap-4">
             <button
-              onClick={clearAll}
+              onClick={() => {
+                if (onClearAll) {
+                  onClearAll()
+                }
+              }}
               className="flex-1 py-3 border border-black font-medium hover:bg-gray-50 transition-colors rounded"
             >
               Clear All
@@ -223,7 +239,7 @@ export function FilterSidebar({ isOpen, onClose, activeFilter, onCategoryChange,
               onClick={onClose}
               className="flex-1 py-3 bg-black text-white font-medium hover:bg-gray-800 transition-colors rounded"
             >
-              View {getTotalSelectedItems() > 0 ? "Filtered" : "1,581"} Items
+              View Filtered Items
             </button>
           </div>
         </div>

@@ -1,32 +1,53 @@
 "use client"
 
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
+import { useEffect, useState } from "react"
 import { HeroSection } from "@/components/landing/hero-section"
+import { FeaturedCollections } from "@/components/landing/featured-collections"
 import { VideoSection } from "@/components/landing/video-section"
 import { CategoryNavigation } from "@/components/landing/category-navigation"
-import { FeaturedCollections } from "@/components/landing/featured-collections"
+import { LandingSkeleton } from "@/components/landing/landing-skeleton"
 
 export default function HomePage() {
+  const [isLoading, setIsLoading] = useState(true)
+  const [showComponentLoading, setShowComponentLoading] = useState(false)
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+
+    // First show skeleton
+    const skeletonTimer = setTimeout(() => {
+      setIsLoading(false)
+      setShowComponentLoading(true)
+    }, 1500)
+
+    // Then show component loading states
+    const componentTimer = setTimeout(() => {
+      setShowComponentLoading(false)
+    }, 3000)
+
+    return () => {
+      clearTimeout(skeletonTimer)
+      clearTimeout(componentTimer)
+    }
+  }, [])
+
+  if (isLoading) {
+    return <LandingSkeleton />
+  }
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
+    <>
+      {/* 1 - Hero Section */}
+      <HeroSection isLoading={showComponentLoading} />
 
-      <main className="flex-1">
-        {/* Hero Section with Memorial Day Sale */}
-        <HeroSection />
+      {/* 2 - Featured Collections (First Two Sections) */}
+      <FeaturedCollections isLoading={showComponentLoading} />
 
-        {/* Featured Collections - Linen, Polo, and Shorts */}
-        <FeaturedCollections />
+      {/* 1 - Video Section */}
+      <VideoSection isLoading={showComponentLoading} />
 
-        {/* Video Section (moved up to replace Resort Section) */}
-        <VideoSection />
-
-        {/* Category Navigation with Collections */}
-        <CategoryNavigation />
-      </main>
-
-      <Footer />
-    </div>
+      {/* 4 - Category Navigation */}
+      <CategoryNavigation isLoading={showComponentLoading} />
+    </>
   )
 }

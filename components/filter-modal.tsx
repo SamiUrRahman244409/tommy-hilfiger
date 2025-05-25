@@ -25,7 +25,6 @@ export function FilterModal({ isOpen, onClose }: FilterModalProps) {
     Category: true,
     Size: false,
     Price: false,
-    Fit: false,
   })
 
   const toggleSection = (section: string) => {
@@ -73,26 +72,17 @@ export function FilterModal({ isOpen, onClose }: FilterModalProps) {
     { name: "$200+", count: 78 },
   ]
 
-  const fitOptions: FilterOption[] = [
-    { name: "Regular Fit", count: 356 },
-    { name: "Slim Fit", count: 289 },
-    { name: "Classic Fit", count: 198 },
-    { name: "Relaxed Fit", count: 145 },
-    { name: "Athletic Fit", count: 87 },
-  ]
 
   const filterSections: FilterSection[] = [
     { title: "Category", options: categoryOptions, isExpanded: true },
     { title: "Size", options: sizeOptions },
     { title: "Price", options: priceOptions },
-    { title: "Fit", options: fitOptions },
   ]
 
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({
     Category: [],
     Size: [],
     Price: [],
-    Fit: [],
   })
 
   const toggleFilter = (section: string, option: string) => {
@@ -118,7 +108,6 @@ export function FilterModal({ isOpen, onClose }: FilterModalProps) {
       Category: [],
       Size: [],
       Price: [],
-      Fit: [],
     })
   }
 

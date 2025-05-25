@@ -3,10 +3,29 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import { LazyVideo } from "@/components/ui/lazy-video"
+import { fetchMediaAssets, getVideoByName, getImageByName } from "@/lib/media-api"
+import { LANDING_MEDIA } from "@/data/landing-media"
+import type { StrapiMediaGroup } from "@/lib/media-api"
 
 export function VideoSection() {
   const [showVideo, setShowVideo] = useState(true)
   const [isLoading, setIsLoading] = useState(true)
+  const [mediaAssets, setMediaAssets] = useState<StrapiMediaGroup[]>([])
+
+  useEffect(() => {
+    async function loadMedia() {
+      try {
+        const assets = await fetchMediaAssets()
+        setMediaAssets(assets)
+      } catch (error) {
+        console.error("Failed to load media assets:", error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadMedia()
+  }, [])
 
   useEffect(() => {
     const checkConnection = () => {
@@ -25,7 +44,6 @@ export function VideoSection() {
       } else {
         setShowVideo(true)
       }
-      setIsLoading(false)
     }
 
     checkConnection()
@@ -40,6 +58,11 @@ export function VideoSection() {
     }
   }, [])
 
+  const desktopVideo = getVideoByName(mediaAssets, LANDING_MEDIA.video.desktop)
+  const mobileVideo = getVideoByName(mediaAssets, LANDING_MEDIA.video.mobile)
+  const desktopPoster = getImageByName(mediaAssets, LANDING_MEDIA.video.posterDesktop)
+  const mobilePoster = getImageByName(mediaAssets, LANDING_MEDIA.video.posterMobile)
+
   if (isLoading) {
     return (
       <section className="relative w-full h-[80vh] min-h-[600px] bg-gray-100 flex items-center justify-center">
@@ -52,10 +75,10 @@ export function VideoSection() {
     <section className="relative w-full h-[80vh] min-h-[600px]">
       {/* Mobile version */}
       <div className="block md:hidden w-full h-full">
-        {showVideo ? (
+        {showVideo && mobileVideo ? (
           <LazyVideo
-            src="https://media.tommy.com/us/static/images/scheduled_marketing/video/20250521_HP_Tile05_Video_mb.mp4"
-            poster="https://media.tommy.com/us/static/images/scheduled_marketing/2025/05/21_HP_Tile05_Video_poster_mb.jpg"
+            src={mobileVideo}
+            poster={mobilePoster}
             aspectRatio="16/9"
             autoPlay
             muted
@@ -65,7 +88,7 @@ export function VideoSection() {
           />
         ) : (
           <Image
-            src="https://media.tommy.com/us/static/images/scheduled_marketing/2025/05/21_HP_Tile05_Video_poster_mb.jpg"
+            src={mobilePoster || "/placeholder.svg"}
             alt="Tommy Hilfiger Collection Mobile"
             fill
             className="object-cover"
@@ -76,10 +99,10 @@ export function VideoSection() {
 
       {/* Desktop version */}
       <div className="hidden md:block w-full h-full">
-        {showVideo ? (
+        {showVideo && desktopVideo ? (
           <LazyVideo
-            src="https://media.tommy.com/us/static/images/scheduled_marketing/video/20250521_HP_Tile05_Video_dt.mp4"
-            poster="https://media.tommy.com/us/static/images/scheduled_marketing/2025/05/21_HP_Tile05_Video_poster_dt.jpg"
+            src={desktopVideo}
+            poster={desktopPoster}
             aspectRatio="16/9"
             autoPlay
             muted
@@ -89,7 +112,7 @@ export function VideoSection() {
           />
         ) : (
           <Image
-            src="https://media.tommy.com/us/static/images/scheduled_marketing/2025/05/21_HP_Tile05_Video_poster_dt.jpg"
+            src={desktopPoster || "/placeholder.svg"}
             alt="Tommy Hilfiger Collection Desktop"
             fill
             className="object-cover"

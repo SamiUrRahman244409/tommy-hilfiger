@@ -38,6 +38,73 @@ export async function fetchProducts(): Promise<StrapiApiResponse> {
   }
 }
 
+// Function to generate random discount while keeping product in same price bracket
+function generateSmartDiscount(originalPrice: number): {
+  discountPercent: number
+  salePrice: number
+  discountText: string
+} {
+  // Define price brackets
+  const brackets = [
+    { min: 0, max: 25 },
+    { min: 25, max: 50 },
+    { min: 50, max: 100 },
+    { min: 100, max: 200 },
+    { min: 200, max: Number.POSITIVE_INFINITY },
+  ]
+
+  // Find which bracket the original price falls into
+  const currentBracket = brackets.find((bracket) => originalPrice > bracket.min && originalPrice <= bracket.max)
+
+  if (!currentBracket) {
+    // Fallback: random discount between 5-25%
+    const discountPercent = Math.floor(Math.random() * 21) + 5 // 5-25%
+    const salePrice = Math.round(originalPrice * (1 - discountPercent / 100) * 100) / 100
+    return {
+      discountPercent,
+      salePrice,
+      discountText: `${discountPercent}% off`,
+    }
+  }
+
+  // Calculate maximum discount that keeps product in same bracket
+  let maxDiscountPercent = 30
+
+  // For products not in the highest bracket, ensure they don't drop below bracket minimum
+  if (currentBracket.max !== Number.POSITIVE_INFINITY) {
+    const minAllowedPrice = currentBracket.min + 0.01 // Stay just above bracket minimum
+    const maxDiscountToStayInBracket = ((originalPrice - minAllowedPrice) / originalPrice) * 100
+    maxDiscountPercent = Math.min(30, Math.floor(maxDiscountToStayInBracket))
+  }
+
+  // Generate random discount between 0 and maxDiscountPercent
+  const discountPercent = Math.floor(Math.random() * (maxDiscountPercent + 1)) // 0 to maxDiscountPercent
+
+  // Calculate sale price
+  const salePrice = Math.round(originalPrice * (1 - discountPercent / 100) * 100) / 100
+
+  // Verify the sale price is still in the correct bracket
+  const isInCorrectBracket = salePrice > currentBracket.min && salePrice <= currentBracket.max
+
+  if (!isInCorrectBracket && discountPercent > 0) {
+    // Fallback: reduce discount to keep in bracket
+    const safeDiscountPercent = Math.floor(((originalPrice - currentBracket.min - 0.01) / originalPrice) * 100)
+    const safeSalePrice = Math.round(originalPrice * (1 - safeDiscountPercent / 100) * 100) / 100
+
+    return {
+      discountPercent: safeDiscountPercent,
+      salePrice: safeSalePrice,
+      discountText: safeDiscountPercent > 0 ? `${safeDiscountPercent}% off` : "No discount",
+    }
+  }
+
+  return {
+    discountPercent,
+    salePrice,
+    discountText: discountPercent > 0 ? `${discountPercent}% off` : "No discount",
+  }
+}
+
 export function transformStrapiProduct(strapiProduct: StrapiProduct): Product {
   // Extract description text from rich text format
   const descriptionText =
@@ -56,12 +123,16 @@ export function transformStrapiProduct(strapiProduct: StrapiProduct): Product {
   // Extract available sizes
   const sizes = strapiProduct.ProductSize?.map((size) => size.size) || []
 
+  // Generate smart discount
+  const originalPrice = strapiProduct.price || 0
+  const { discountPercent, salePrice, discountText } = generateSmartDiscount(originalPrice)
+
   return {
     id: strapiProduct.id,
     name: strapiProduct.Title,
-    price: strapiProduct.price,
-    salePrice: strapiProduct.price * 0.7, // Calculate 30% discount as fallback
-    discount: "30% off", // Default discount
+    price: originalPrice,
+    salePrice: salePrice,
+    discount: discountText,
     image: mainImage,
     hoverImage: hoverImage,
     alt: strapiProduct.Title,

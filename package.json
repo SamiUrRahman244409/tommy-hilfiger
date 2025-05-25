@@ -3,12 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "postbuild": "next-sitemap"
+    "lint": "next lint"
   },
   "dependencies": {
     "@eslint/eslintrc": "latest",
@@ -49,7 +47,6 @@
     "input-otp": "latest",
     "lucide-react": "^0.454.0",
     "next": "15.2.4",
-    "next-sitemap": "^4.2.3",
     "next-themes": "latest",
     "path": "latest",
     "react": "^19",

@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 import { ProductDetailInfo } from "@/components/detail/product-detail-info"
 import { ProductDetailCarousel } from "@/components/detail/product-detail-carousel"
 import { ProductDetailQuickView } from "@/components/detail/product-detail-quick-view"
@@ -11,12 +9,21 @@ import { ZoomModal } from "@/components/detail/zoom-modal"
 import { useProductDetail } from "@/hooks/use-product-detail"
 import { useProducts } from "@/hooks/use-products"
 import type { Product } from "@/types"
-import { ProductsLoading } from "@/components/menu/products-loading"
 import { ProductsError } from "@/components/menu/products-error"
 
 export default function ProductDetailPage() {
   const params = useParams()
   const slug = params.slug as string
+
+  // Add scroll to top effect
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  // Add this useEffect after the existing scroll to top effect
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [slug])
 
   const { product, loading, error, refetch } = useProductDetail(slug)
   const { products: allProducts } = useProducts() // For "More Like This" section
@@ -80,28 +87,97 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-1 py-8">
-          <div className="max-w-7xl mx-auto px-4 md:px-6">
-            <ProductsLoading />
+      <div className="py-8">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          {/* Product Detail Skeleton */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+            {/* Image Gallery Skeleton */}
+            <div className="space-y-4">
+              {/* Main Image */}
+              <div className="aspect-square bg-gray-200 animate-pulse rounded-lg"></div>
+              {/* Thumbnail Images */}
+              <div className="grid grid-cols-4 gap-2">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="aspect-square bg-gray-200 animate-pulse rounded-lg"></div>
+                ))}
+              </div>
+            </div>
+
+            {/* Product Info Skeleton */}
+            <div className="space-y-6">
+              {/* Breadcrumb */}
+              <div className="h-4 bg-gray-200 animate-pulse rounded w-1/3"></div>
+
+              {/* Product Title */}
+              <div className="space-y-2">
+                <div className="h-8 bg-gray-200 animate-pulse rounded w-3/4"></div>
+                <div className="h-6 bg-gray-200 animate-pulse rounded w-1/2"></div>
+              </div>
+
+              {/* Price */}
+              <div className="h-8 bg-gray-200 animate-pulse rounded w-1/4"></div>
+
+              {/* Color Selector */}
+              <div className="space-y-3">
+                <div className="h-4 bg-gray-200 animate-pulse rounded w-1/6"></div>
+                <div className="flex gap-2">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className="w-8 h-8 bg-gray-200 animate-pulse rounded-full"></div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Size Selector */}
+              <div className="space-y-3">
+                <div className="h-4 bg-gray-200 animate-pulse rounded w-1/6"></div>
+                <div className="flex gap-2">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="w-12 h-10 bg-gray-200 animate-pulse rounded"></div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="space-y-3">
+                <div className="h-12 bg-gray-200 animate-pulse rounded w-full"></div>
+                <div className="h-12 bg-gray-200 animate-pulse rounded w-full"></div>
+              </div>
+
+              {/* Product Description */}
+              <div className="space-y-2">
+                <div className="h-4 bg-gray-200 animate-pulse rounded w-full"></div>
+                <div className="h-4 bg-gray-200 animate-pulse rounded w-5/6"></div>
+                <div className="h-4 bg-gray-200 animate-pulse rounded w-4/6"></div>
+              </div>
+            </div>
           </div>
-        </main>
-        <Footer />
+
+          {/* More Like This Section Skeleton */}
+          <div className="space-y-6">
+            <div className="h-8 bg-gray-200 animate-pulse rounded w-1/4"></div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="space-y-3">
+                  <div className="aspect-square bg-gray-200 animate-pulse rounded-lg"></div>
+                  <div className="space-y-2">
+                    <div className="h-4 bg-gray-200 animate-pulse rounded w-3/4"></div>
+                    <div className="h-4 bg-gray-200 animate-pulse rounded w-1/2"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
 
   if (error || !product) {
     return (
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-1 py-8">
-          <div className="max-w-7xl mx-auto px-4 md:px-6">
-            <ProductsError error={error || "Product not found"} onRetry={refetch} />
-          </div>
-        </main>
-        <Footer />
+      <div className="py-8">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <ProductsError error={error || "Product not found"} onRetry={refetch} />
+        </div>
       </div>
     )
   }
@@ -113,10 +189,8 @@ export default function ProductDetailPage() {
   })) || [{ src: product.image, alt: product.name }]
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-
-      <main className={`flex-1 py-8 ${quickViewOpen ? "filter blur-sm" : ""}`}>
+    <>
+      <div className={`py-8 ${quickViewOpen ? "filter blur-sm" : ""}`}>
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <ProductDetailInfo
             product={product}
@@ -132,13 +206,11 @@ export default function ProductDetailPage() {
             onProductClick={openQuickView}
           />
         </div>
-      </main>
-
-      <Footer isBlurred={quickViewOpen} />
+      </div>
 
       <ProductDetailQuickView isOpen={quickViewOpen} product={selectedProduct} onClose={closeQuickView} />
 
       <ZoomModal isOpen={zoomModalOpen} imageSrc={zoomedImageSrc} onClose={closeZoomModal} />
-    </div>
+    </>
   )
 }

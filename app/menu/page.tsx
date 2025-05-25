@@ -1,6 +1,4 @@
 "use client"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 import { ProductDetailQuickView } from "@/components/detail/product-detail-quick-view"
 import { FilterSidebar } from "@/components/filter-sidebar"
 import { PageTitle } from "@/components/menu/page-title"
@@ -13,8 +11,13 @@ import { useMenuLogic } from "@/hooks/use-menu-logic"
 import { useProducts } from "@/hooks/use-products"
 import { ProductsLoading } from "@/components/menu/products-loading"
 import { ProductsError } from "@/components/menu/products-error"
+import { useEffect } from "react"
 
 export default function MenuPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   const { products, loading, error, refetch } = useProducts()
 
   const {
@@ -24,10 +27,12 @@ export default function MenuPage() {
     hoveredProductId,
     isFilterSidebarOpen,
     activeFilter,
-    activeCategory,
+    selectedCategories,
     currentImageIndices,
     showBackToTop,
     filteredProducts,
+    selectedSizes,
+    selectedPriceRanges,
     openQuickView,
     closeQuickView,
     openFilterSidebar,
@@ -35,6 +40,9 @@ export default function MenuPage() {
     handleHover,
     handleCategoryChange,
     handleImageChange,
+    handleSizeChange,
+    handlePriceChange,
+    clearAllFilters,
   } = useMenuLogic(products)
 
   // Split filtered products for main grid and recommended
@@ -43,50 +51,41 @@ export default function MenuPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-1 mx-8">
-          <PageTitle />
-          <FilterButtons
-            onFilterClick={openFilterSidebar}
-            activeCategory={activeCategory}
-            onCategoryChange={handleCategoryChange}
-            productCount={0}
-          />
-          <ProductsLoading />
-        </main>
-        <Footer />
+      <div className="mx-8">
+        <PageTitle />
+        <FilterButtons
+          onFilterClick={openFilterSidebar}
+          selectedCategories={selectedCategories}
+          onCategoryChange={handleCategoryChange}
+          productCount={0}
+        />
+        <ProductsLoading />
       </div>
     )
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-1 mx-8">
-          <PageTitle />
-          <FilterButtons
-            onFilterClick={openFilterSidebar}
-            activeCategory={activeCategory}
-            onCategoryChange={handleCategoryChange}
-            productCount={0}
-          />
-          <ProductsError error={error} onRetry={refetch} />
-        </main>
-        <Footer />
+      <div className="mx-8">
+        <PageTitle />
+        <FilterButtons
+          onFilterClick={openFilterSidebar}
+          selectedCategories={selectedCategories}
+          onCategoryChange={handleCategoryChange}
+          productCount={0}
+        />
+        <ProductsError error={error} onRetry={refetch} />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      <main className="flex-1 mx-8">
+    <>
+      <div className="mx-8">
         <PageTitle />
         <FilterButtons
           onFilterClick={openFilterSidebar}
-          activeCategory={activeCategory}
+          selectedCategories={selectedCategories}
           onCategoryChange={handleCategoryChange}
           productCount={filteredProducts.length}
         />
@@ -122,16 +121,21 @@ export default function MenuPage() {
 
         <BrandDescription />
         <BackToTop show={showBackToTop} />
-      </main>
+      </div>
+
       <FilterSidebar
         isOpen={isFilterSidebarOpen}
         onClose={closeFilterSidebar}
         activeFilter={activeFilter}
         onCategoryChange={handleCategoryChange}
-        activeCategory={activeCategory}
+        selectedCategories={selectedCategories}
+        onSizeChange={handleSizeChange}
+        selectedSizes={selectedSizes}
+        onPriceChange={handlePriceChange}
+        selectedPriceRanges={selectedPriceRanges}
+        onClearAll={clearAllFilters}
       />
       <ProductDetailQuickView isOpen={isQuickViewOpen} product={quickViewProduct} onClose={closeQuickView} />
-      <Footer />
-    </div>
+    </>
   )
 }
