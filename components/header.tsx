@@ -6,12 +6,11 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Search, ShoppingBag, User } from "lucide-react"
 import Link from "next/link"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 
 export function Header() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const router = useRouter()
-  const searchParams = useSearchParams()
 
   const slides = [
     "40 - 70% Off Sitewide, Plus an Extra 25% Off $175+ or 15% Off $125+ for Hilfiger Club Members",
