@@ -1,72 +1,57 @@
-import type React from "react"
-import "@/app/globals.css"
-import type { Viewport } from "next"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
+import type { Metadata } from 'next'
+import './globals.css'
 
-export const metadata = {
-  title: "Tommy Hilfiger - Premium Fashion & Clothing | Official Store",
-  icons: {
-    icon: "/favicon.svg",
-  },
-  description:
-    "Shop the latest Tommy Hilfiger collection. Premium fashion, clothing, and accessories for men, women, and kids. Free shipping on orders over $100.",
-  generator: "v0.dev",
-  keywords: "Tommy Hilfiger, fashion, clothing, premium, men, women, kids, accessories, official store",
-  authors: [{ name: "Tommy Hilfiger" }],
-  robots: "index, follow",
-  openGraph: {
-    title: "Tommy Hilfiger - Premium Fashion & Clothing",
-    description: "Shop the latest Tommy Hilfiger collection. Premium fashion, clothing, and accessories.",
-    type: "website",
-    locale: "en_US",
-    siteName: "Tommy Hilfiger",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Tommy Hilfiger - Premium Fashion & Clothing",
-    description: "Shop the latest Tommy Hilfiger collection. Premium fashion, clothing, and accessories.",
-  },
-}
-
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 5,
-  userScalable: true,
+export const metadata: Metadata = {
+  title: 'v0 App',
+  description: 'Created with v0',
+  generator: 'v0.dev',
 }
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   return (
     <html lang="en">
       <head>
-        {/* DNS prefetch for external domains */}
-        <link rel="dns-prefetch" href="//grounded-confidence-41a8f2f2aa.strapiapp.com" />
-        <link rel="dns-prefetch" href="//grounded-confidence-41a8f2f2aa.media.strapiapp.com" />
-        <link rel="dns-prefetch" href="//media.tommy.com" />
-        <link rel="dns-prefetch" href="//usa.tommy.com" />
-        {/* Preconnect to critical domains */}
-        <link rel="preconnect" href="https://grounded-confidence-41a8f2f2aa.strapiapp.com" />
-        <link rel="preconnect" href="https://grounded-confidence-41a8f2f2aa.media.strapiapp.com" />
-        <link rel="preconnect" href="https://media.tommy.com" />
-        {/* Resource hints for performance */}
+        {/* Preload critical CSS */}
+        <link rel="preload" href="/_next/static/css/app/layout.css" as="style" />
+        <link rel="preload" href="/_next/static/css/app/globals.css" as="style" />
+
+        {/* Optimize CSS delivery */}
+        <link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+
+        {/* Critical CSS inlining for above-the-fold content */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+    /* Critical CSS for initial render */
+    body { margin: 0; font-family: system-ui, -apple-system, sans-serif; }
+    .min-h-screen { min-height: 100vh; }
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .flex-1 { flex: 1 1 0%; }
+    /* Header critical styles */
+    header { position: sticky; top: 0; z-index: 50; background: white; border-bottom: 1px solid #e5e7eb; }
+    /* Footer critical styles */
+    footer { background: white; padding: 3rem 0; }
+  `
+        }} />
+
+        {/* Non-critical CSS with media query trick */}
         <link
           rel="preload"
-          as="image"
-          href="https://media.tommy.com/us/static/images/scheduled_marketing/2025/05/21_HP_PromoHero01_dt.jpg"
+          href="/_next/static/css/chunks/pages/_app.css"
+          as="style"
+          onLoad={(e) => {
+            const link = e.currentTarget as HTMLLinkElement;
+            link.onload = null;
+            link.rel = 'stylesheet';
+          }}
         />
+        <noscript><link rel="stylesheet" href="/_next/static/css/chunks/pages/_app.css" /></noscript>
       </head>
-      <body>
-        <div className="min-h-screen flex flex-col">
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
-      </body>
+      <body>{children}</body>
     </html>
   )
 }
