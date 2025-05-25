@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { Twitter, Facebook, Instagram, Youtube } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -54,17 +55,17 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
                 />
                 <label htmlFor="terms" className="text-xs">
                   By clicking the Join Now button, I agree to the{" "}
-                  <a href="#" className="underline">
+                  <Link href="#" className="underline">
                     Terms and Conditions
-                  </a>{" "}
+                  </Link>{" "}
                   and to receive updates on the latest products and promotions via email or other channels. See{" "}
-                  <a href="#" className="underline">
+                  <Link href="#" className="underline">
                     Privacy Policy
-                  </a>
+                  </Link>
                   , which includes our{" "}
-                  <a href="#" className="underline">
+                  <Link href="#" className="underline">
                     Notice of Financial Incentive
-                  </a>{" "}
+                  </Link>{" "}
                   for more information.
                 </label>
               </div>
@@ -81,54 +82,54 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
               <h3 className="font-bold mb-4">Help & Support</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     Customer Service
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     Order Status
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     Shipping
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     Returns
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     Klarna
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     Cash App Afterpay
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     Promotions & Discounts
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     Group Discounts
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     E-Gift Cards
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     Store Directory
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -136,29 +137,29 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
               <h3 className="font-bold mb-4">About Tommy Hilfiger</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     Tommy Stories
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     People's Place Program
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     Sustainability
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     Press
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     Pre-owned
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -166,24 +167,24 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
               <h3 className="font-bold mb-4">Join Us</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     The Hilfiger Club
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     Newsletter Signup
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     Careers
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     Affiliate Program
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -191,27 +192,27 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
               <h3 className="font-bold mb-4">Contact Us</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     Store Locator
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="#" className="hover:underline">
                     Chat
-                  </a>
+                  </Link>
                 </li>
               </ul>
               <div className="flex space-x-4 mt-6">
-                <a href="#" aria-label="Twitter" className="hover:text-gray-600">
+                <Link href="#" aria-label="Twitter" className="hover:text-gray-600">
                   <Twitter className="h-5 w-5" />
-                </a>
-                <a href="#" aria-label="Facebook" className="hover:text-gray-600">
+                </Link>
+                <Link href="#" aria-label="Facebook" className="hover:text-gray-600">
                   <Facebook className="h-5 w-5" />
-                </a>
-                <a href="#" aria-label="Instagram" className="hover:text-gray-600">
+                </Link>
+                <Link href="#" aria-label="Instagram" className="hover:text-gray-600">
                   <Instagram className="h-5 w-5" />
-                </a>
-                <a href="#" aria-label="Pinterest" className="hover:text-gray-600">
+                </Link>
+                <Link href="#" aria-label="Pinterest" className="hover:text-gray-600">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="20"
@@ -226,10 +227,10 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
                   >
                     <path d="M12 2C6.5 2 2 6.5 2 12c0 4.2 2.6 7.9 6.4 9.4-.1-.8-.2-2 0-2.9.2-.8 1.3-5 1.3-5s-.3-.6-.3-1.6c0-1.5.9-2.6 1.9-2.6.9 0 1.3.7 1.3 1.5 0 .9-.6 2.3-.9 3.5-.3 1.1.5 1.9 1.6 1.9 1.9 0 3.4-2 3.4-4.9 0-2.6-1.9-4.4-4.5-4.4-3.1 0-4.8 2.3-4.8 4.7 0 .9.3 1.9.8 2.4.1.1.1.2.1.3-.1.3-.2 1-.3 1.1-.1.2-.2.2-.4.1-1.4-.7-2.3-2.9-2.3-4.6 0-3.8 2.8-7.2 7.9-7.2 4.2 0 7.4 3 7.4 6.9 0 4.1-2.6 7.5-6.2 7.5-1.2 0-2.4-.6-2.8-1.4 0 0-.6 2.3-.7 2.9-.3 1-1 2.3-1.5 3.1 1.1.3 2.3.5 3.5.5 5.5 0 10-4.5 10-10S17.5 2 12 2z" />
                   </svg>
-                </a>
-                <a href="#" aria-label="YouTube" className="hover:text-gray-600">
+                </Link>
+                <Link href="#" aria-label="YouTube" className="hover:text-gray-600">
                   <Youtube className="h-5 w-5" />
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -246,37 +247,37 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
             </div>
 
             <div className="flex flex-wrap justify-center text-xs space-x-2 mb-4">
-              <a href="#" className="hover:underline">
+              <Link href="#" className="hover:underline">
                 Terms & Conditions
-              </a>
+              </Link>
               <span>|</span>
-              <a href="#" className="hover:underline">
+              <Link href="#" className="hover:underline">
                 Privacy Policy
-              </a>
+              </Link>
               <span>|</span>
-              <a href="#" className="hover:underline">
+              <Link href="#" className="hover:underline">
                 Privacy Commitment
-              </a>
+              </Link>
               <span>|</span>
-              <a href="#" className="hover:underline">
+              <Link href="#" className="hover:underline">
                 Interest Based Ads
-              </a>
+              </Link>
               <span>|</span>
-              <a href="#" className="hover:underline">
+              <Link href="#" className="hover:underline">
                 Do Not Sell Or Share My Personal Information
-              </a>
+              </Link>
               <span>|</span>
-              <a href="#" className="hover:underline">
+              <Link href="#" className="hover:underline">
                 PVH Corp. Joint Modern Slavery Act Statement
-              </a>
+              </Link>
               <span>|</span>
-              <a href="#" className="hover:underline">
+              <Link href="#" className="hover:underline">
                 Brand Protection
-              </a>
+              </Link>
               <span>|</span>
-              <a href="#" className="hover:underline">
+              <Link href="#" className="hover:underline">
                 Accessibility
-              </a>
+              </Link>
             </div>
 
             <div className="text-center text-xs">

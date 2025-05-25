@@ -47,7 +47,7 @@ export function ProductQuickViewDetails({
         </span>
       </div>
 
-      <ProductColorSelector selectedColor={selectedColor} onColorChange={onColorChange} />
+      <ProductColorSelector />
 
       <ProductSizeSelector selectedSize={selectedSize} onSizeChange={onSizeChange} variant="sidebar" />
 

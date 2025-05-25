@@ -3,7 +3,6 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ProductDetailQuickView } from "@/components/detail/product-detail-quick-view"
 import { FilterSidebar } from "@/components/filter-sidebar"
-import { Breadcrumb } from "@/components/menu/breadcrumb"
 import { PageTitle } from "@/components/menu/page-title"
 import { FilterButtons } from "@/components/menu/filter-buttons"
 import { ProductGrid } from "@/components/menu/product-grid"
@@ -47,7 +46,6 @@ export default function MenuPage() {
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-1 mx-8">
-          <Breadcrumb />
           <PageTitle />
           <FilterButtons
             onFilterClick={openFilterSidebar}
@@ -67,7 +65,6 @@ export default function MenuPage() {
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-1 mx-8">
-          <Breadcrumb />
           <PageTitle />
           <FilterButtons
             onFilterClick={openFilterSidebar}
@@ -86,7 +83,6 @@ export default function MenuPage() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1 mx-8">
-        <Breadcrumb />
         <PageTitle />
         <FilterButtons
           onFilterClick={openFilterSidebar}

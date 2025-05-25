@@ -1,13 +1,21 @@
-"use client"
+import Link from "next/link"
 
-export function Breadcrumb() {
+export const Breadcrumb = () => {
   return (
-    <div className="w-full py-4">
-      <div className="text-sm">
-        <a href="#" className="hover:underline">
-          Men
-        </a>
-      </div>
+    <div className="text-sm breadcrumbs">
+      <ul>
+        <li>
+          <Link href="/" className="hover:underline">
+            Home
+          </Link>
+        </li>
+        <li>
+          <Link href="#" className="hover:underline">
+            Men
+          </Link>
+        </li>
+        <li>Accessories</li>
+      </ul>
     </div>
   )
 }
