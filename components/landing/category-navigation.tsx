@@ -67,10 +67,10 @@ export function CategoryNavigation({ isLoading = false }: CategoryNavigationProp
   return (
     <section className="py-16 px-4 max-w-7xl mx-auto">
       {/* Category Navigation */}
-      <div className="grid grid-cols-2 gap-8 mb-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-12">
         <div>
           <h2 className="text-2xl font-bold text-center mb-6">Men</h2>
-          <div className="flex justify-center space-x-8">
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-8">
             <Link
               href="/menu?category=men"
               scroll={false}
@@ -104,7 +104,7 @@ export function CategoryNavigation({ isLoading = false }: CategoryNavigationProp
 
         <div>
           <h2 className="text-2xl font-bold text-center mb-6">Women</h2>
-          <div className="flex justify-center space-x-8">
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-8">
             <Link
               href="/menu?category=women"
               scroll={false}

@@ -113,12 +113,12 @@ export function FeaturedCollections({ isLoading = false }: FeaturedCollectionsPr
         </div>
 
         {/* Center Text */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-center z-10 w-full px-4">
-          <h2 className="text-3xl md:text-4xl font-medium mb-2">Shorts, All Summer Long</h2>
-          <p className="text-sm md:text-base max-w-md mx-auto">
-            Wear-everywhere fits, warm-weather colors and hems that hit just right
-          </p>
-        </div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-center z-10 w-full px-4 hidden sm:block">
+        <h2 className="text-3xl md:text-4xl font-medium mb-2">Shorts, All Summer Long</h2>
+        <p className="text-sm md:text-base max-w-md mx-auto">
+          Wear-everywhere fits, warm-weather colors and hems that hit just right
+        </p>
+      </div>
       </div>
 
       {/* Second row */}
