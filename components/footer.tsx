@@ -19,15 +19,17 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="flex flex-col items-center justify-center">
             <div className="flex flex-col md:flex-row items-center justify-center mb-6 max-w-3xl mx-auto gap-0">
-              <div className="text-center relative md:min-w-[200px] flex justify-center">
-                <div className="relative w-[130px] h-[110px]">
+              <div className="text-center relative flex justify-center">
+                <div className="w-[130px] h-[110px]">
                   <Image
                     src="/images/hilfiger-club.svg"
                     alt="Hilfiger Club"
                     width={130}
                     height={110}
+                    layout="fixed" // Use fixed layout to enforce exact dimensions
                     className="object-contain"
                     priority // Prioritize loading to reduce CLS
+                    style={{ width: "130px", height: "110px" }} // Explicitly enforce dimensions
                   />
                 </div>
               </div>
@@ -80,7 +82,7 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
       {/* Footer */}
       <footer className={`py-12 bg-white ${isBlurred ? "filter blur-sm" : ""}`}>
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 min-h-[200px]"> {/* Set min-height to stabilize grid */}
             <div>
               <h3 className="font-bold mb-4">Help & Support</h3>
               <ul className="space-y-2 text-sm">
@@ -240,14 +242,16 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
 
           <div className="mt-12 pt-8 border-t">
             <div className="flex justify-center mb-6">
-              <div className="relative w-[150px] h-[30px]">
+              <div className="w-[150px] h-[30px]">
                 <Image
                   src="/images/tommy-hilfiger-logo.svg"
                   alt="TOMMY HILFIGER"
                   width={150}
                   height={30}
+                  layout="fixed" // Use fixed layout to enforce exact dimensions
                   className="object-contain"
                   priority // Prioritize loading to reduce CLS
+                  style={{ width: "150px", height: "30px" }} // Explicitly enforce dimensions
                 />
               </div>
             </div>
