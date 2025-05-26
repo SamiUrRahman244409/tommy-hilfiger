@@ -20,14 +20,17 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
           <div className="flex flex-col items-center justify-center">
             <div className="flex flex-col md:flex-row items-center justify-center mb-6 max-w-3xl mx-auto gap-0">
               <div className="text-center relative md:min-w-[200px] flex justify-center">
-  <Image
-  src="/images/hilfiger-club.svg"
-  alt="Hilfiger Club"
-  width={130}
-  height={110}
-  className="aspect-[13/11] w-[130px] h-auto mx-auto"
-/>
-</div>
+                <div className="relative w-[130px] h-[110px]">
+                  <Image
+                    src="/images/hilfiger-club.svg"
+                    alt="Hilfiger Club"
+                    width={130}
+                    height={110}
+                    className="object-contain"
+                    priority // Prioritize loading to reduce CLS
+                  />
+                </div>
+              </div>
               <div className="max-w-md">
                 <p className="text-sm mb-2 font-bold">Enter your email for VIP access</p>
                 <p className="text-sm mb-2">to sales and more exclusive perks</p>
@@ -237,15 +240,17 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
 
           <div className="mt-12 pt-8 border-t">
             <div className="flex justify-center mb-6">
-  <Image
-  src="/images/tommy-hilfiger-logo.svg"
-  alt="TOMMY HILFIGER"
-  width={150}
-  height={30}
-  className="aspect-[5/1] w-[150px] h-auto"
-/>
-</div>
-
+              <div className="relative w-[150px] h-[30px]">
+                <Image
+                  src="/images/tommy-hilfiger-logo.svg"
+                  alt="TOMMY HILFIGER"
+                  width={150}
+                  height={30}
+                  className="object-contain"
+                  priority // Prioritize loading to reduce CLS
+                />
+              </div>
+            </div>
 
             <div className="flex flex-wrap justify-center text-xs space-x-2 mb-4">
               <Link href="#" className="hover:underline">
