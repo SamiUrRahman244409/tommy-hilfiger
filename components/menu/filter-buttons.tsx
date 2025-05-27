@@ -4,16 +4,20 @@ import { ChevronDown, SlidersHorizontal } from "lucide-react"
 
 interface FilterButtonsProps {
   onFilterClick: (filter: string) => void
-  activeCategory?: string | null
+  selectedCategories: string[]
   onCategoryChange: (category: string | null) => void
   productCount?: number
+  selectedSort: string
+  onSortChange: (sort: string) => void
 }
 
 export function FilterButtons({
   onFilterClick,
-  activeCategory,
+  selectedCategories,
   onCategoryChange,
   productCount = 0,
+  selectedSort,
+  onSortChange,
 }: FilterButtonsProps) {
   return (
     <div className="w-full pb-8">
@@ -49,6 +53,27 @@ export function FilterButtons({
               <SlidersHorizontal className="h-4 w-4 ml-2" />
             </span>
           </button>
+        </div>
+
+        <div className="flex items-center gap-4">
+          {productCount > 0 && (
+            <span className="text-sm text-gray-600">
+              {productCount} {productCount === 1 ? "product" : "products"}
+            </span>
+          )}
+
+          <div className="relative">
+            <span className="text-sm font-medium text-gray-700 mr-2">Sort by:</span>
+            <select
+              value={selectedSort}
+              onChange={(e) => onSortChange(e.target.value)}
+              className="border rounded-md px-3 py-1 text-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="newest">Newest</option>
+              <option value="price-low-high">Price Low To High</option>
+              <option value="price-high-low">Price High To Low</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>

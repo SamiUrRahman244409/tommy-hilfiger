@@ -26,10 +26,14 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
                     alt="Hilfiger Club"
                     width={130}
                     height={110}
-                    layout="fixed" // Use fixed layout to enforce exact dimensions
                     className="object-contain"
-                    priority // Prioritize loading to reduce CLS
-                    style={{ width: "130px", height: "110px" }} // Explicitly enforce dimensions
+                    priority
+                    style={{
+                      width: "130px",
+                      height: "110px",
+                      minWidth: "130px",
+                      minHeight: "110px",
+                    }}
                   />
                 </div>
               </div>
@@ -82,8 +86,10 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
       {/* Footer */}
       <footer className={`py-12 bg-white ${isBlurred ? "filter blur-sm" : ""}`}>
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 min-h-[200px]"> {/* Set min-height to stabilize grid */}
-            <div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 min-h-[280px]">
+            {" "}
+            {/* Set min-height to stabilize grid */}
+            <div className="min-h-[240px]">
               <h3 className="font-bold mb-4">Help & Support</h3>
               <ul className="space-y-2 text-sm">
                 <li>
@@ -138,7 +144,7 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
                 </li>
               </ul>
             </div>
-            <div>
+            <div className="min-h-[240px]">
               <h3 className="font-bold mb-4">About Tommy Hilfiger</h3>
               <ul className="space-y-2 text-sm">
                 <li>
@@ -168,7 +174,7 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
                 </li>
               </ul>
             </div>
-            <div>
+            <div className="min-h-[240px]">
               <h3 className="font-bold mb-4">Join Us</h3>
               <ul className="space-y-2 text-sm">
                 <li>
@@ -193,7 +199,7 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
                 </li>
               </ul>
             </div>
-            <div>
+            <div className="min-h-[240px]">
               <h3 className="font-bold mb-4">Contact Us</h3>
               <ul className="space-y-2 text-sm">
                 <li>
@@ -248,10 +254,14 @@ export function Footer({ isBlurred = false }: { isBlurred?: boolean }) {
                   alt="TOMMY HILFIGER"
                   width={150}
                   height={30}
-                  layout="fixed" // Use fixed layout to enforce exact dimensions
                   className="object-contain"
-                  priority // Prioritize loading to reduce CLS
-                  style={{ width: "150px", height: "30px" }} // Explicitly enforce dimensions
+                  priority
+                  style={{
+                    width: "150px",
+                    height: "30px",
+                    minWidth: "150px",
+                    minHeight: "30px",
+                  }}
                 />
               </div>
             </div>

@@ -20,35 +20,79 @@ export function useMenuLogic(allProducts: Product[] = []) {
   const [showBackToTop, setShowBackToTop] = useState(false)
   const [selectedSizes, setSelectedSizes] = useState<string[]>([])
   const [selectedPriceRanges, setSelectedPriceRanges] = useState<string[]>([])
+  const [selectedSortOption, setSelectedSortOption] = useState<string>("recommended")
+  const [searchQuery, setSearchQuery] = useState<string>("")
 
-  // Initialize categories from URL params on mount (only once)
+  // Initialize categories, sort, and search from URL params on mount (only once)
   useEffect(() => {
     const categoryParam = searchParams.get("category")
+    const sortParam = searchParams.get("sort")
+    const searchParam = searchParams.get("search")
+
     if (categoryParam) {
       const categories = categoryParam.split(",").map((cat) => cat.toLowerCase())
       setSelectedCategories(categories)
     }
-  }, []) // Empty dependency array - only run once on mount
 
-  // Update URL when categories change (but not on initial load)
-  const updateURL = useCallback((categories: string[]) => {
-    const params = new URLSearchParams(window.location.search)
-
-    if (categories.length > 0) {
-      params.set("category", categories.join(","))
+    if (sortParam) {
+      setSelectedSortOption(sortParam)
     } else {
-      params.delete("category")
+      setSelectedSortOption("recommended") // Set recommended as default
     }
 
-    const newURL = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ""}`
+    if (searchParam) {
+      setSearchQuery(searchParam)
+    }
+  }, []) // Empty dependency array - only run once on mount
 
-    // Use replace to avoid page reload and don't add to history for every filter change
-    window.history.replaceState({}, "", newURL)
-  }, [])
+  // Update URL when categories, sort, or search change
+  const updateURL = useCallback(
+    (categories: string[], sortOption?: string, search?: string) => {
+      const params = new URLSearchParams(window.location.search)
 
-  // Filter products by category, size, and price
+      if (categories.length > 0) {
+        params.set("category", categories.join(","))
+      } else {
+        params.delete("category")
+      }
+
+      const currentSort = sortOption !== undefined ? sortOption : selectedSortOption
+      if (currentSort && currentSort !== "recommended") {
+        params.set("sort", currentSort)
+      } else {
+        params.delete("sort")
+      }
+
+      const currentSearch = search !== undefined ? search : searchQuery
+      if (currentSearch && currentSearch.trim()) {
+        params.set("search", currentSearch.trim())
+      } else {
+        params.delete("search")
+      }
+
+      const newURL = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ""}`
+
+      // Use replace to avoid page reload and don't add to history for every filter change
+      window.history.replaceState({}, "", newURL)
+    },
+    [selectedSortOption, searchQuery],
+  )
+
+  // Filter and sort products by category, size, price, search, and sort option
   const filteredProducts = useMemo(() => {
     let filtered = allProducts
+
+    // Filter by search query first
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim()
+      filtered = filtered.filter((product) => {
+        const name = product.name?.toLowerCase() || ""
+        const description = product.description?.toLowerCase() || ""
+        const category = product.category?.toLowerCase() || ""
+
+        return name.includes(query) || description.includes(query) || category.includes(query)
+      })
+    }
 
     // Filter by category
     if (selectedCategories.length > 0) {
@@ -77,13 +121,6 @@ export function useMenuLogic(allProducts: Product[] = []) {
 
     // Size filtering is DISABLED - sizes are hardcoded and don't affect products
     // The selectedSizes state is maintained for UI purposes only
-    // if (selectedSizes.length > 0) {
-    //   // This filtering is intentionally commented out
-    //   filtered = filtered.filter((product) => {
-    //     if (!product.ProductSize || product.ProductSize.length === 0) return false
-    //     return product.ProductSize.some((size) => selectedSizes.includes(size.toUpperCase()))
-    //   })
-    // }
 
     // Filter by price (using original price without discount)
     if (selectedPriceRanges.length > 0) {
@@ -108,8 +145,25 @@ export function useMenuLogic(allProducts: Product[] = []) {
       })
     }
 
-    return filtered
-  }, [allProducts, selectedCategories, selectedPriceRanges]) // Removed selectedSizes from dependencies
+    // Sort products
+    const sorted = [...filtered].sort((a, b) => {
+      switch (selectedSortOption) {
+        case "price-low-high":
+          return (a.price || 0) - (b.price || 0)
+        case "price-high-low":
+          return (b.price || 0) - (a.price || 0)
+        case "newest":
+          // Sort by ID descending for newest (assuming higher ID = newer)
+          return b.id - a.id
+        case "recommended":
+        default:
+          // For recommended, show products in their default order (no sorting)
+          return 0
+      }
+    })
+
+    return sorted
+  }, [allProducts, selectedCategories, selectedPriceRanges, selectedSortOption, searchQuery])
 
   // Initialize image indices when products change
   useEffect(() => {
@@ -157,10 +211,27 @@ export function useMenuLogic(allProducts: Product[] = []) {
   const handleCategoryChange = useCallback(
     (categories: string[]) => {
       setSelectedCategories(categories)
-      updateURL(categories)
+      updateURL(categories, selectedSortOption, searchQuery)
       setVisibleProducts(8) // Reset visible products when category changes
     },
-    [updateURL],
+    [updateURL, selectedSortOption, searchQuery],
+  )
+
+  const handleSortChange = useCallback(
+    (sortOption: string) => {
+      setSelectedSortOption(sortOption)
+      updateURL(selectedCategories, sortOption, searchQuery)
+    },
+    [updateURL, selectedCategories, searchQuery],
+  )
+
+  const handleSearchChange = useCallback(
+    (query: string) => {
+      setSearchQuery(query)
+      updateURL(selectedCategories, selectedSortOption, query)
+      setVisibleProducts(8) // Reset visible products when search changes
+    },
+    [updateURL, selectedCategories, selectedSortOption],
   )
 
   const handleImageChange = useCallback(
@@ -204,8 +275,10 @@ export function useMenuLogic(allProducts: Product[] = []) {
     setSelectedCategories([])
     setSelectedSizes([])
     setSelectedPriceRanges([])
+    setSelectedSortOption("recommended")
+    setSearchQuery("")
     setVisibleProducts(8)
-    updateURL([])
+    updateURL([], "recommended", "")
   }, [updateURL])
 
   return {
@@ -221,6 +294,8 @@ export function useMenuLogic(allProducts: Product[] = []) {
     filteredProducts,
     selectedSizes,
     selectedPriceRanges,
+    selectedSortOption,
+    searchQuery,
     openQuickView,
     closeQuickView,
     openFilterSidebar,
@@ -230,6 +305,8 @@ export function useMenuLogic(allProducts: Product[] = []) {
     handleImageChange,
     handleSizeChange,
     handlePriceChange,
+    handleSortChange,
+    handleSearchChange,
     clearAllFilters,
   }
 }
