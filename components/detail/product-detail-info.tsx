@@ -1,15 +1,16 @@
 "use client"
 
 import { useState } from "react"
-import { ChevronRight, Star, Maximize2 } from "lucide-react"
+import { ChevronRight, Star, Maximize2 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { LazyImage } from "@/components/ui/lazy-image"
 import { ProductDetailSidebar } from "@/components/detail/product-detail-sidebar"
 import { ProductSizeSelector } from "./product-size-selector"
-import type { ProductImage } from "@/types"
+import type { ProductImage, Product } from "@/types"
 
 interface ProductDetailInfoProps {
+  product?: Product
   productImages: ProductImage[]
   currentImage: number
   setCurrentImage: (index: number) => void
@@ -23,6 +24,7 @@ type ColorOption = {
 }
 
 export function ProductDetailInfo({
+  product,
   productImages,
   currentImage,
   setCurrentImage,
@@ -52,6 +54,12 @@ export function ProductDetailInfo({
     setSidebarOpen(false)
     setSidebarContent("")
   }
+
+  // Use product data if available, otherwise use default values
+  const productName = product?.name || "Hilfiger 1985 Logo T-Shirt"
+  const originalPrice = product?.price || 39.50
+  const salePrice = product?.salePrice || 25.68
+  const discountPercent = Math.round((1 - salePrice / originalPrice) * 100)
 
   return (
     <>
@@ -117,23 +125,19 @@ export function ProductDetailInfo({
         <div className="space-y-6 sticky top-8 self-start">
           {/* Breadcrumbs */}
           <div className="flex items-center text-sm text-gray-500">
-            <span className="hover:underline cursor-pointer">
-  Men
-</span>
+            <span className="hover:underline cursor-pointer">Men</span>
             <ChevronRight className="h-4 w-4 mx-1" />
-            <span className="hover:underline cursor-pointer">
-  Clothing
-</span>
+            <span className="hover:underline cursor-pointer">Clothing</span>
           </div>
 
           {/* Product Title */}
-          <h1 className="text-2xl font-bold">Hilfiger 1985 Logo T-Shirt</h1>
+          <h1 className="text-2xl font-bold">{productName}</h1>
 
           {/* Price */}
           <div className="flex items-center space-x-2">
-            <span className="text-gray-500 line-through">$39.50</span>
-            <span className="font-bold text-lg">$25.68</span>
-            <span className="text-red-600 font-medium">35% off</span>
+            <span className="text-gray-500 line-through">${originalPrice.toFixed(2)}</span>
+            <span className="font-bold text-lg">${salePrice.toFixed(2)}</span>
+            <span className="text-red-600 font-medium">{discountPercent}% off</span>
           </div>
 
           {/* Reviews Summary */}
@@ -190,7 +194,7 @@ export function ProductDetailInfo({
               </SelectContent>
             </Select>
             <Button className="flex-1 bg-black hover:bg-gray-800 text-white rounded-none py-6">
-              Add to Bag - $25.68
+              Add to Bag - ${salePrice.toFixed(2)}
             </Button>
           </div>
 

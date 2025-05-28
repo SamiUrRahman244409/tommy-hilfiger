@@ -65,8 +65,8 @@ export function VideoSection() {
 
   if (isLoading) {
     return (
-      <section className="relative w-full h-[80vh] min-h-[600px] bg-gray-100 flex items-center justify-center">
-        <div className="w-12 h-12 border-2 border-gray-300 border-t-black rounded-full animate-spin" />
+      <section className="relative w-full h-[80vh] min-h-[600px]">
+        <div className="w-full h-full bg-gray-200 animate-pulse" />
       </section>
     )
   }

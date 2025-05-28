@@ -27,7 +27,7 @@ export function LazyImage({
   fill = false,
   sizes,
 }: LazyImageProps) {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoaded, setIsLoaded] = useState(false)
   const [hasError, setHasError] = useState(false)
   const loadedImages = useRef<Set<string>>(new Set())
 
@@ -37,35 +37,32 @@ export function LazyImage({
   const imageSrc = src && src.trim() !== "" ? src : "/placeholder.svg?height=800&width=600"
 
   useEffect(() => {
-    // Only reset loading state if the image source actually changed
-    // and we haven't already loaded this image before
+    // If we've already loaded this image before, show it immediately
     if (loadedImages.current.has(imageSrc)) {
-      setIsLoading(false)
+      setIsLoaded(true)
       return
     }
 
-    setIsLoading(true)
+    setIsLoaded(false)
     setHasError(false)
   }, [imageSrc])
 
   const handleImageLoad = () => {
-    setIsLoading(false)
+    setIsLoaded(true)
     setHasError(false)
     loadedImages.current.add(imageSrc)
   }
 
   const handleImageError = () => {
-    setIsLoading(false)
+    setIsLoaded(false)
     setHasError(true)
   }
 
   return (
     <div className={cn("relative overflow-hidden bg-gray-200", className)} style={containerStyle}>
-      {/* Loading skeleton */}
-      {isLoading && !hasError && (
-        <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
-          <div className="w-8 h-8 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
-        </div>
+      {/* Skeleton loader - shown when not loaded and no error */}
+      {!isLoaded && !hasError && (
+        <div className="absolute inset-0 bg-gray-200 animate-pulse" />
       )}
 
       {/* Error state */}
@@ -89,14 +86,14 @@ export function LazyImage({
           priority={priority}
           sizes={sizes}
           className={cn(
-            "transition-all duration-500 ease-in-out transform",
-            isLoading || hasError ? "opacity-0" : "opacity-100",
+            "transition-opacity duration-500 ease-in-out",
+            isLoaded ? "opacity-100" : "opacity-0",
             fill ? "object-cover" : "w-full h-full object-cover",
           )}
           onLoad={handleImageLoad}
           onError={handleImageError}
           loading={priority ? "eager" : "lazy"}
-          unoptimized={true} // Disable optimization for all images to ensure transitions work
+          unoptimized={true}
         />
       </div>
     </div>

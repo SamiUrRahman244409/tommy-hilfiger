@@ -2,8 +2,9 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export function ProductsLoading() {
   return (
-    <div className="w-full pb-12">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="w-full">
+      {/* Main product grid skeleton */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pb-12">
         {Array.from({ length: 8 }).map((_, index) => (
           <div key={index} className="space-y-3">
             <Skeleton className="h-[400px] w-full rounded-lg" />
@@ -43,15 +44,17 @@ export function ProductsLoading() {
         </div>
       </div>
 
-      {/* Brand Description skeleton */}
-      <div className="w-full pb-12">
-        <div className="max-w-4xl mx-auto text-center space-y-4">
-          <Skeleton className="h-8 w-64 mx-auto" />
+      {/* Brand Description skeleton with consistent height */}
+      <div className="w-full py-8 border-t border-gray-200">
+        <div className="space-y-4">
+          <Skeleton className="h-6 w-48" />
           <div className="space-y-2">
             <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-5/6 mx-auto" />
-            <Skeleton className="h-4 w-4/5 mx-auto" />
-            <Skeleton className="h-4 w-3/4 mx-auto" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-5/6" />
+            <Skeleton className="h-4 w-4/5" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-3/4" />
           </div>
         </div>
       </div>

@@ -41,22 +41,14 @@ export function FeaturedCollections({ isLoading = false }: FeaturedCollectionsPr
       <section className="w-full">
         {/* First row - 2 columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0 relative w-full mb-1">
-          <div className="relative w-full h-[600px] md:h-[800px] bg-gray-100 flex items-center justify-center">
-            <div className="w-12 h-12 border-2 border-gray-300 border-t-black rounded-full animate-spin" />
-          </div>
-          <div className="relative w-full h-[600px] md:h-[800px] bg-gray-100 flex items-center justify-center">
-            <div className="w-12 h-12 border-2 border-gray-300 border-t-black rounded-full animate-spin" />
-          </div>
+          <div className="relative w-full h-[600px] md:h-[800px] bg-gray-200 animate-pulse" />
+          <div className="relative w-full h-[600px] md:h-[800px] bg-gray-200 animate-pulse" />
         </div>
 
         {/* Second row - 2 columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0 w-full mb-1">
-          <div className="relative w-full h-[600px] md:h-[800px] bg-gray-100 flex items-center justify-center">
-            <div className="w-12 h-12 border-2 border-gray-300 border-t-black rounded-full animate-spin" />
-          </div>
-          <div className="relative w-full h-[600px] md:h-[800px] bg-gray-100 flex items-center justify-center">
-            <div className="w-12 h-12 border-2 border-gray-300 border-t-black rounded-full animate-spin" />
-          </div>
+          <div className="relative w-full h-[600px] md:h-[800px] bg-gray-200 animate-pulse" />
+          <div className="relative w-full h-[600px] md:h-[800px] bg-gray-200 animate-pulse" />
         </div>
       </section>
     )
@@ -114,11 +106,11 @@ export function FeaturedCollections({ isLoading = false }: FeaturedCollectionsPr
 
         {/* Center Text */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-center z-10 w-full px-4 hidden sm:block">
-        <h2 className="text-3xl md:text-4xl font-medium mb-2">Shorts, All Summer Long</h2>
-        <p className="text-sm md:text-base max-w-md mx-auto">
-          Wear-everywhere fits, warm-weather colors and hems that hit just right
-        </p>
-      </div>
+          <h2 className="text-3xl md:text-4xl font-medium mb-2">Shorts, All Summer Long</h2>
+          <p className="text-sm md:text-base max-w-md mx-auto">
+            Wear-everywhere fits, warm-weather colors and hems that hit just right
+          </p>
+        </div>
       </div>
 
       {/* Second row */}

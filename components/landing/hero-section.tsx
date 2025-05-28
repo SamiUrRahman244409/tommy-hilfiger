@@ -36,10 +36,8 @@ export function HeroSection({ isLoading = false }: HeroSectionProps) {
 
   if (isLoading || isMediaLoading) {
     return (
-      <section className="relative w-full h-screen mb-1 bg-gray-100">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-12 h-12 border-2 border-gray-300 border-t-black rounded-full animate-spin" />
-        </div>
+      <section className="relative w-full h-screen mb-1">
+        <div className="w-full h-full bg-gray-200 animate-pulse" />
       </section>
     )
   }
@@ -74,8 +72,8 @@ export function HeroSection({ isLoading = false }: HeroSectionProps) {
         />
       </div>
 
-    <div className="absolute inset-x-0 top-0 pt-4 md:pt-4 flex flex-col items-center text-white text-center max-w-md mx-auto">
-  <h1 className="text-lg md:text-xl font-medium mb-1">Memorial Day Sale</h1>
+      <div className="absolute inset-x-0 top-0 pt-4 md:pt-4 flex flex-col items-center text-white text-center max-w-md mx-auto">
+        <h1 className="text-lg md:text-xl font-medium mb-1">Memorial Day Sale</h1>
         <div className="flex flex-col md:flex-row items-center gap-1 md:gap-4">
           <div className="text-2xl md:text-3xl lg:text-2xl font-medium leading-tight">
             40 – 70%

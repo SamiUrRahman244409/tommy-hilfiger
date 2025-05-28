@@ -1,8 +1,30 @@
 "use client"
 
-export function BrandDescription() {
+import { Skeleton } from "@/components/ui/skeleton"
+
+interface BrandDescriptionProps {
+  loading?: boolean
+}
+
+export function BrandDescription({ loading = false }: BrandDescriptionProps) {
+  if (loading) {
+    return (
+      <div className="w-full py-8 border-t border-gray-200">
+        <Skeleton className="h-6 w-48 mb-4" />
+        <div className="space-y-3">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-3/4" />
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="w-full py-8 border-t border-gray-200">
+    <div className="w-full py-8 border-t border-gray-200 animate-in fade-in duration-300">
       <h3 className="text-lg font-semibold mb-4">About Tommy Hilfiger</h3>
       <p className="text-gray-700 leading-relaxed">
         Discover the essence of American style with Tommy Hilfiger's premium collection of men's apparel and

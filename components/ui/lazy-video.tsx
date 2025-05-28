@@ -24,7 +24,7 @@ export function LazyVideo({
   loop = false,
   playsInline = true,
 }: LazyVideoProps) {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoaded, setIsLoaded] = useState(false)
   const [hasError, setHasError] = useState(false)
   const [isInView, setIsInView] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -50,11 +50,9 @@ export function LazyVideo({
 
   return (
     <div ref={containerRef} className={cn("relative overflow-hidden bg-gray-100", className)} style={{ aspectRatio }}>
-      {/* Loading skeleton */}
-      {isLoading && (
-        <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
-          <div className="w-12 h-12 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
-        </div>
+      {/* Skeleton loader - shown when not loaded and no error */}
+      {!isLoaded && !hasError && (
+        <div className="absolute inset-0 bg-gray-200 animate-pulse" />
       )}
 
       {/* Error state */}
@@ -69,17 +67,17 @@ export function LazyVideo({
         <video
           ref={videoRef}
           className={cn(
-            "absolute inset-0 w-full h-full object-cover transition-opacity duration-300",
-            isLoading ? "opacity-0" : "opacity-100",
+            "absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out",
+            isLoaded ? "opacity-100" : "opacity-0",
           )}
           autoPlay={autoPlay}
           muted={muted}
           loop={loop}
           playsInline={playsInline}
           poster={poster}
-          onLoadedData={() => setIsLoading(false)}
+          onLoadedData={() => setIsLoaded(true)}
           onError={() => {
-            setIsLoading(false)
+            setIsLoaded(false)
             setHasError(true)
           }}
         >

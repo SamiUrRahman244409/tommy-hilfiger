@@ -69,6 +69,7 @@ export function FilterButtons({
               onChange={(e) => onSortChange(e.target.value)}
               className="border rounded-md px-3 py-1 text-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
+              <option value="recommended">Recommended</option>
               <option value="newest">Newest</option>
               <option value="price-low-high">Price Low To High</option>
               <option value="price-high-low">Price High To Low</option>

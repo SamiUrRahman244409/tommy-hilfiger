@@ -1,17 +1,17 @@
 import type React from "react"
 import "@/app/globals.css"
-import type { Viewport } from "next"
+import type { Metadata, Viewport } from 'next'
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Tommy Hilfiger - Premium Fashion & Clothing | Official Store",
   icons: {
     icon: "/favicon.svg",
   },
   description:
     "Shop the latest Tommy Hilfiger collection. Premium fashion, clothing, and accessories for men, women, and kids. Free shipping on orders over $100.",
-  generator: "v0.dev",
+  generator: 'v0.dev',
   keywords: "Tommy Hilfiger, fashion, clothing, premium, men, women, kids, accessories, official store",
   authors: [{ name: "Tommy Hilfiger" }],
   robots: "index, follow",
@@ -55,10 +55,12 @@ export default function RootLayout({
         <link rel="preconnect" href="https://media.tommy.com" />
         {/* Preload removed to avoid early image loading */}
       </head>
-      <body>
+      <body className="antialiased">
         <div className="min-h-screen flex flex-col">
           <Header />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1 relative">
+            {children}
+          </main>
           <Footer />
         </div>
       </body>

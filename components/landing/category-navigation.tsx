@@ -40,23 +40,17 @@ export function CategoryNavigation({ isLoading = false }: CategoryNavigationProp
       <section className="py-16 px-4 max-w-7xl mx-auto">
         {/* Category Navigation Loading */}
         <div className="grid grid-cols-2 gap-8 mb-12">
-          <div className="h-20 bg-gray-100 rounded flex items-center justify-center">
-            <div className="w-8 h-8 border-2 border-gray-300 border-t-black rounded-full animate-spin" />
-          </div>
-          <div className="h-20 bg-gray-100 rounded flex items-center justify-center">
-            <div className="w-8 h-8 border-2 border-gray-300 border-t-black rounded-full animate-spin" />
-          </div>
+          <div className="h-20 bg-gray-200 animate-pulse rounded" />
+          <div className="h-20 bg-gray-200 animate-pulse rounded" />
         </div>
 
         {/* Collection Showcase Loading - 4 columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[1, 2, 3, 4].map((item) => (
             <div key={item} className="flex flex-col items-center">
-              <div className="aspect-[3/4] w-full bg-gray-100 rounded mb-4 flex items-center justify-center">
-                <div className="w-8 h-8 border-2 border-gray-300 border-t-black rounded-full animate-spin" />
-              </div>
-              <div className="h-6 w-32 bg-gray-100 rounded mb-2"></div>
-              <div className="h-4 w-40 bg-gray-100 rounded"></div>
+              <div className="aspect-[3/4] w-full bg-gray-200 animate-pulse rounded mb-4" />
+              <div className="h-6 w-32 bg-gray-200 animate-pulse rounded mb-2"></div>
+              <div className="h-4 w-40 bg-gray-200 animate-pulse rounded"></div>
             </div>
           ))}
         </div>
