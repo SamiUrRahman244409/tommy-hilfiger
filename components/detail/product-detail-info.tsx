@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { ChevronRight, Star, Maximize2 } from 'lucide-react'
+import { useState, useCallback, useMemo } from "react"
+import { ChevronRight, Star, Maximize2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { LazyImage } from "@/components/ui/lazy-image"
@@ -38,58 +38,73 @@ export function ProductDetailInfo({
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [sidebarContent, setSidebarContent] = useState<string>("")
 
-  const colorOptions: ColorOption[] = [
-    { name: "Dark Blue", bgClass: "bg-blue-800" },
-    { name: "Gray", bgClass: "bg-gray-400" },
-    { name: "White", bgClass: "bg-white", textClass: "text-gray-800" },
-    { name: "Black", bgClass: "bg-black", textClass: "text-white" },
-  ]
+  const colorOptions: ColorOption[] = useMemo(
+    () => [
+      { name: "Dark Blue", bgClass: "bg-blue-800" },
+      { name: "Gray", bgClass: "bg-gray-400" },
+      { name: "White", bgClass: "bg-white", textClass: "text-gray-800" },
+      { name: "Black", bgClass: "bg-black", textClass: "text-white" },
+    ],
+    [],
+  )
 
-  const openSidebar = (content: string) => {
+  const openSidebar = useCallback((content: string) => {
     setSidebarContent(content)
     setSidebarOpen(true)
-  }
+  }, [])
 
-  const closeSidebar = () => {
+  const closeSidebar = useCallback(() => {
     setSidebarOpen(false)
     setSidebarContent("")
-  }
+  }, [])
 
-  // Use product data if available, otherwise use default values
-  const productName = product?.name || "Hilfiger 1985 Logo T-Shirt"
-  const originalPrice = product?.price || 39.50
-  const salePrice = product?.salePrice || 25.68
-  const discountPercent = Math.round((1 - salePrice / originalPrice) * 100)
+  const handleThumbnailClick = useCallback(
+    (index: number) => {
+      const targetPosition = index * 300
+      window.scrollTo({
+        top: targetPosition,
+        behavior: "smooth",
+      })
+      setCurrentImage(index)
+    },
+    [setCurrentImage],
+  )
+
+  // Memoize product data calculations
+  const productData = useMemo(() => {
+    const productName = product?.name || "Hilfiger 1985 Logo T-Shirt"
+    const originalPrice = product?.price || 39.5
+    const salePrice = product?.salePrice || 25.68
+    const discountPercent = Math.round((1 - salePrice / originalPrice) * 100)
+
+    return { productName, originalPrice, salePrice, discountPercent }
+  }, [product])
 
   return (
     <>
       <div className="grid md:grid-cols-2 gap-8">
         {/* Product Images */}
         <div className="relative">
-          {/* Image Navigation */}
+          {/* Image Navigation - Optimized */}
           <div className="absolute left-4 top-32 z-10 flex flex-col space-y-2">
             {productImages.map((image, index) => (
               <button
                 key={index}
-                onClick={() => {
-                  const targetPosition = index * 300
-                  window.scrollTo({
-                    top: targetPosition,
-                    behavior: "smooth",
-                  })
-                  setCurrentImage(index)
-                }}
-                className={`w-16 h-16 border-2 ${
+                onClick={() => handleThumbnailClick(index)}
+                className={`w-12 h-12 border-2 ${
                   currentImage === index ? "border-black" : "border-gray-200"
-                } overflow-hidden`}
+                } overflow-hidden transition-all duration-200 hover:border-gray-400`}
               >
                 <LazyImage
                   src={image.src}
                   alt={`Thumbnail ${index + 1}`}
-                  width={64}
-                  height={64}
+                  width={48}
+                  height={48}
                   aspectRatio="1/1"
                   className="w-full h-full object-cover"
+                  sizes="48px"
+                  quality={50}
+                  priority={index === 0}
                 />
               </button>
             ))}
@@ -106,7 +121,9 @@ export function ProductDetailInfo({
                   height={800}
                   aspectRatio="3/4"
                   className="w-full object-contain"
-                  priority={index === 0} // Load the first image with priority
+                  priority={index === 0}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  quality={85}
                 />
                 {/* Zoom button - only shown on hover */}
                 <button
@@ -131,13 +148,13 @@ export function ProductDetailInfo({
           </div>
 
           {/* Product Title */}
-          <h1 className="text-2xl font-bold">{productName}</h1>
+          <h1 className="text-2xl font-bold">{productData.productName}</h1>
 
           {/* Price */}
           <div className="flex items-center space-x-2">
-            <span className="text-gray-500 line-through">${originalPrice.toFixed(2)}</span>
-            <span className="font-bold text-lg">${salePrice.toFixed(2)}</span>
-            <span className="text-red-600 font-medium">{discountPercent}% off</span>
+            <span className="text-gray-500 line-through">${productData.originalPrice.toFixed(2)}</span>
+            <span className="font-bold text-lg">${productData.salePrice.toFixed(2)}</span>
+            <span className="text-red-600 font-medium">{productData.discountPercent}% off</span>
           </div>
 
           {/* Reviews Summary */}
@@ -194,7 +211,7 @@ export function ProductDetailInfo({
               </SelectContent>
             </Select>
             <Button className="flex-1 bg-black hover:bg-gray-800 text-white rounded-none py-6">
-              Add to Bag - ${salePrice.toFixed(2)}
+              Add to Bag - ${productData.salePrice.toFixed(2)}
             </Button>
           </div>
 

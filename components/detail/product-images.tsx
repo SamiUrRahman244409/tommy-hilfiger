@@ -3,6 +3,7 @@
 import { Maximize2 } from "lucide-react"
 import { LazyImage } from "@/components/ui/lazy-image"
 import type { ProductImage } from "@/types"
+import { useCallback, useEffect } from "react"
 
 interface ProductImagesProps {
   productImages: ProductImage[]
@@ -12,24 +13,48 @@ interface ProductImagesProps {
 }
 
 export function ProductImages({ productImages, currentImage, setCurrentImage, onZoomImage }: ProductImagesProps) {
+  // Preload adjacent images for better UX
+  useEffect(() => {
+    const preloadImage = (src: string) => {
+      const img = new Image()
+      img.src = src
+    }
+
+    // Preload current, next, and previous images
+    if (productImages[currentImage]) {
+      preloadImage(productImages[currentImage].src)
+    }
+    if (productImages[currentImage + 1]) {
+      preloadImage(productImages[currentImage + 1].src)
+    }
+    if (productImages[currentImage - 1]) {
+      preloadImage(productImages[currentImage - 1].src)
+    }
+  }, [currentImage, productImages])
+
+  const handleThumbnailClick = useCallback(
+    (index: number) => {
+      const targetPosition = index * 300
+      window.scrollTo({
+        top: targetPosition,
+        behavior: "smooth",
+      })
+      setCurrentImage(index)
+    },
+    [setCurrentImage],
+  )
+
   return (
     <div className="relative">
-      {/* Image Navigation */}
+      {/* Image Navigation - Optimized thumbnails */}
       <div className="absolute left-4 top-32 z-10 flex flex-col space-y-2">
         {productImages.map((image, index) => (
           <button
             key={index}
-            onClick={() => {
-              const targetPosition = index * 300
-              window.scrollTo({
-                top: targetPosition,
-                behavior: "smooth",
-              })
-              setCurrentImage(index)
-            }}
+            onClick={() => handleThumbnailClick(index)}
             className={`w-16 h-16 border-2 ${
               currentImage === index ? "border-black" : "border-gray-200"
-            } overflow-hidden`}
+            } overflow-hidden transition-all duration-200 hover:border-gray-400`}
           >
             <LazyImage
               src={image.src}
@@ -38,6 +63,9 @@ export function ProductImages({ productImages, currentImage, setCurrentImage, on
               height={64}
               aspectRatio="1/1"
               className="w-full h-full object-cover"
+              sizes="64px"
+              quality={60}
+              priority={index === 0}
             />
           </button>
         ))}
@@ -54,7 +82,9 @@ export function ProductImages({ productImages, currentImage, setCurrentImage, on
               height={800}
               aspectRatio="3/4"
               className="w-full object-contain"
-              priority={index === 0}
+              priority={index === 0} // Only first image has priority
+              sizes="(max-width: 768px) 100vw, 50vw"
+              quality={85}
             />
             {/* Zoom button - only shown on hover */}
             <button

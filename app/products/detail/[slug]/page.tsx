@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback, useMemo } from "react"
 import { useParams } from "next/navigation"
 import { ProductDetailInfo } from "@/components/detail/product-detail-info"
 import { ProductDetailCarousel } from "@/components/detail/product-detail-carousel"
@@ -12,22 +12,34 @@ import { ProductDetailSkeleton } from "@/components/detail/product-detail-skelet
 import type { Product } from "@/types"
 import { ProductsError } from "@/components/menu/products-error"
 
+// Debounce utility for scroll events
+function useDebounce<T extends (...args: any[]) => void>(callback: T, delay: number): T {
+  const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout>()
+
+  const debouncedCallback = useCallback(
+    (...args: any[]) => {
+      if (debounceTimer) {
+        clearTimeout(debounceTimer)
+      }
+      setDebounceTimer(setTimeout(() => callback(...args), delay))
+    },
+    [callback, delay, debounceTimer],
+  ) as T
+
+  return debouncedCallback
+}
+
 export default function ProductDetailPage() {
   const params = useParams()
   const slug = params.slug as string
 
-  // Add scroll to top effect
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-
-  // Add this useEffect after the existing scroll to top effect
+  // Scroll to top on mount and slug change
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [slug])
 
   const { product, loading, error, refetch } = useProductDetail(slug)
-  const { products: allProducts } = useProducts() // For "More Like This" section
+  const { products: allProducts } = useProducts()
 
   const [currentImage, setCurrentImage] = useState(0)
   const [quickViewOpen, setQuickViewOpen] = useState(false)
@@ -40,51 +52,67 @@ export default function ProductDetailPage() {
     setCurrentImage(0)
   }, [product])
 
-  useEffect(() => {
-    // Add scroll event listener to track which images are visible
-    const handlePageScroll = () => {
-      const scrollPosition = window.scrollY
+  // Optimized scroll handler with debouncing
+  const handlePageScroll = useCallback(() => {
+    const scrollPosition = window.scrollY
 
-      // Determine which image is most visible based on scroll position
-      if (scrollPosition < 300) {
-        setCurrentImage(0)
-      } else if (scrollPosition < 600) {
-        setCurrentImage(1)
-      } else if (scrollPosition < 900) {
-        setCurrentImage(2)
-      } else {
-        setCurrentImage(3)
-      }
+    // Determine which image is most visible based on scroll position
+    let newImageIndex = 0
+    if (scrollPosition >= 900) {
+      newImageIndex = 3
+    } else if (scrollPosition >= 600) {
+      newImageIndex = 2
+    } else if (scrollPosition >= 300) {
+      newImageIndex = 1
     }
 
-    window.addEventListener("scroll", handlePageScroll)
-    return () => window.removeEventListener("scroll", handlePageScroll)
+    setCurrentImage(newImageIndex)
   }, [])
 
-  const openQuickView = (selectedProduct: Product) => {
+  const debouncedScrollHandler = useDebounce(handlePageScroll, 100)
+
+  useEffect(() => {
+    window.addEventListener("scroll", debouncedScrollHandler, { passive: true })
+    return () => window.removeEventListener("scroll", debouncedScrollHandler)
+  }, [debouncedScrollHandler])
+
+  const openQuickView = useCallback((selectedProduct: Product) => {
     setSelectedProduct(selectedProduct)
     setQuickViewOpen(true)
-  }
+  }, [])
 
-  const closeQuickView = () => {
+  const closeQuickView = useCallback(() => {
     setQuickViewOpen(false)
     setSelectedProduct(null)
-  }
+  }, [])
 
-  const openZoomModal = (imageSrc: string) => {
+  const openZoomModal = useCallback((imageSrc: string) => {
     setZoomedImageSrc(imageSrc)
     setZoomModalOpen(true)
     document.body.style.overflow = "hidden"
-  }
+  }, [])
 
-  const closeZoomModal = () => {
+  const closeZoomModal = useCallback(() => {
     setZoomModalOpen(false)
     setZoomedImageSrc("")
     document.body.style.overflow = "auto"
-  }
+  }, [])
 
-  // Filter out current product and get similar products
-  const moreLikeThisProducts = allProducts.filter((p) => p.id !== product?.id).slice(0, 8) // Show 8 similar products
+  // Memoize similar products to prevent unnecessary recalculations
+  const moreLikeThisProducts = useMemo(() => {
+    return allProducts.filter((p) => p.id !== product?.id).slice(0, 8)
+  }, [allProducts, product?.id])
+
+  // Memoize product images to prevent unnecessary recalculations
+  const productImages = useMemo(() => {
+    if (!product) return []
+    return (
+      product.images?.map((src, index) => ({
+        src,
+        alt: `${product.name} - Image ${index + 1}`,
+      })) || [{ src: product.image, alt: product.name }]
+    )
+  }, [product])
 
   if (loading) {
     return <ProductDetailSkeleton />
@@ -99,12 +127,6 @@ export default function ProductDetailPage() {
       </div>
     )
   }
-
-  // Transform product data to match ProductDetailInfo expectations
-  const productImages = product.images?.map((src, index) => ({
-    src,
-    alt: `${product.name} - Image ${index + 1}`,
-  })) || [{ src: product.image, alt: product.name }]
 
   return (
     <>
