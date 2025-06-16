@@ -42,7 +42,7 @@ interface StrapiMediaResponse {
   }
 }
 
-const STRAPI_BASE_URL = "https://grateful-action-a3c4ebca24.strapiapp.com"
+const STRAPI_BASE_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL
 
 export async function fetchMediaAssets(): Promise<StrapiMediaGroup[]> {
   try {

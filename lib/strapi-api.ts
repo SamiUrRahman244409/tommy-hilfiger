@@ -2,7 +2,7 @@ import type { StrapiApiResponse, StrapiProduct } from "@/types/strapi"
 import type { Product } from "@/types"
 
 // Get API URL from environment variables
-const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL || "https://grateful-action-a3c4ebca24.strapiapp.com/api"
+const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL + "/api"
 const STRAPI_API_TOKEN = process.env.STRAPI_API_TOKEN
 
 // Static generation configuration - 6 hours revalidation
