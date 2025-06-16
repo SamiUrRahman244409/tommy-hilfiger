@@ -8,6 +8,7 @@ import { LazyImage } from "@/components/ui/lazy-image"
 import { ProductDetailSidebar } from "@/components/detail/product-detail-sidebar"
 import { ProductSizeSelector } from "./product-size-selector"
 import type { ProductImage, Product } from "@/types"
+import { useCart } from "@/hooks/use-cart"
 
 interface ProductDetailInfoProps {
   product?: Product
@@ -37,6 +38,8 @@ export function ProductDetailInfo({
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [sidebarContent, setSidebarContent] = useState<string>("")
+  const [quantity, setQuantity] = useState(1)
+  const { addToCart } = useCart()
 
   const colorOptions: ColorOption[] = useMemo(
     () => [
@@ -79,6 +82,28 @@ export function ProductDetailInfo({
 
     return { productName, originalPrice, salePrice, discountPercent }
   }, [product])
+
+  const isAddToCartEnabled = useMemo(() => {
+    return selectedColor && selectedSize && quantity > 0
+  }, [selectedColor, selectedSize, quantity])
+
+  const handleAddToCart = useCallback(() => {
+    if (!product || !isAddToCartEnabled) return
+
+    addToCart({
+      productId: product.id || "default-id",
+      name: productData.productName,
+      image: productImages[0]?.src || "/placeholder.svg?height=400&width=300",
+      price: productData.salePrice,
+      originalPrice: productData.originalPrice,
+      quantity,
+      size: selectedSize!,
+      color: selectedColor.name,
+    })
+
+    // Remove the redirect - just open sidebar
+    // router.push("/cart")
+  }, [product, isAddToCartEnabled, addToCart, quantity, selectedSize, selectedColor, productData, productImages])
 
   return (
     <>
@@ -198,7 +223,7 @@ export function ProductDetailInfo({
 
           {/* Add to Cart */}
           <div className="flex items-center space-x-2">
-            <Select>
+            <Select value={quantity.toString()} onValueChange={(value) => setQuantity(Number.parseInt(value))}>
               <SelectTrigger className="w-24">
                 <SelectValue placeholder="Qty" />
               </SelectTrigger>
@@ -210,7 +235,15 @@ export function ProductDetailInfo({
                 ))}
               </SelectContent>
             </Select>
-            <Button className="flex-1 bg-black hover:bg-gray-800 text-white rounded-none py-6">
+            <Button
+              className={`flex-1 rounded-none py-6 transition-all duration-200 ${
+                isAddToCartEnabled
+                  ? "bg-black hover:bg-gray-800 text-white"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+              onClick={handleAddToCart}
+              disabled={!isAddToCartEnabled}
+            >
               Add to Bag - ${productData.salePrice.toFixed(2)}
             </Button>
           </div>

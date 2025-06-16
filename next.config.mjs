@@ -11,14 +11,26 @@ const nextConfig = {
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    domains: [
+      'grateful-action-a3c4ebca24.strapiapp.com',
+      'res.cloudinary.com',
+      'images.unsplash.com',
+      'via.placeholder.com'
+    ],
   },
   // Enable compression
   compress: true,
-  // Modern JavaScript output
+  // Experimental features for static generation
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
+    // Enable static generation optimizations
+    staticWorkerRequestDeduping: true,
+    // Optimize CSS
+    optimizeCss: true,
+    // Enable parallel builds
+    parallelServerBuildTraces: true,
   },
-  // Cache headers for static assets
+  // Enhanced cache headers for static assets
   async headers() {
     return [
       {
@@ -48,13 +60,13 @@ const nextConfig = {
           },
         ],
       },
-      // Cache external images
+      // Cache static pages
       {
-        source: '/api/proxy-image/:path*',
+        source: '/((?!api|_next/static|_next/image|favicon.ico).*)',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=2592000, s-maxage=31536000',
+            value: 'public, max-age=21600, s-maxage=21600, stale-while-revalidate=86400',
           },
         ],
       },
@@ -62,6 +74,46 @@ const nextConfig = {
   },
   // Disable powered by header for security
   poweredByHeader: false,
+  // Enable SWC minification
+  swcMinify: true,
+  // Static generation optimizations
+  webpack: (config, { dev, isServer }) => {
+    // Production optimizations
+    if (!dev) {
+      // Optimize bundle splitting
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+          common: {
+            name: 'common',
+            minChunks: 2,
+            chunks: 'all',
+            enforce: true,
+          },
+        },
+      }
+
+      // Optimize for static generation
+      if (isServer) {
+        config.optimization.concatenateModules = true
+      }
+    }
+    return config
+  },
+  // Generate static sitemap
+  async rewrites() {
+    return [
+      {
+        source: '/sitemap.xml',
+        destination: '/api/sitemap',
+      },
+    ]
+  },
 }
 
 export default nextConfig

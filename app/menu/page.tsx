@@ -1,135 +1,54 @@
-"use client"
-import { ProductDetailQuickView } from "@/components/detail/product-detail-quick-view"
-import { FilterSidebar } from "@/components/filter-sidebar"
 import { PageTitle } from "@/components/menu/page-title"
-import { FilterButtons } from "@/components/menu/filter-buttons"
-import { ProductGrid } from "@/components/menu/product-grid"
-import { RecommendedProducts } from "@/components/menu/recommended-products"
 import { BrandDescription } from "@/components/menu/brand-description"
-import { BackToTop } from "@/components/menu/back-to-top"
-import { SearchBar } from "@/components/menu/search-bar"
-import { useMenuLogic } from "@/hooks/use-menu-logic"
-import { useProducts } from "@/hooks/use-products"
-import { ProductsLoading } from "@/components/menu/products-loading"
-import { ProductsError } from "@/components/menu/products-error"
-import { useEffect } from "react"
+import { getAllProductsServer, getCategoriesServer, STATIC_REVALIDATE_TIME } from "@/lib/strapi-api"
+import { MenuClientWrapper } from "@/components/menu/menu-client-wrapper"
+import type { Metadata } from "next"
 
-export default function MenuPage() {
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+// Static generation with revalidation
+export const revalidate = STATIC_REVALIDATE_TIME // 6 hours
 
-  const { products, loading, error, refetch } = useProducts()
+// Generate metadata for menu page
+export async function generateMetadata(): Promise<Metadata> {
+  const products = await getAllProductsServer()
+  const productCount = products.length
 
-  const {
-    visibleProducts,
-    quickViewProduct,
-    isQuickViewOpen,
-    hoveredProductId,
-    isFilterSidebarOpen,
-    activeFilter,
-    selectedCategories,
-    currentImageIndices,
-    showBackToTop,
-    filteredProducts,
-    selectedSizes,
-    selectedPriceRanges,
-    selectedSortOption,
-    searchQuery,
-    openQuickView,
-    closeQuickView,
-    openFilterSidebar,
-    closeFilterSidebar,
-    handleHover,
-    handleCategoryChange,
-    handleImageChange,
-    handleSizeChange,
-    handlePriceChange,
-    handleSortChange,
-    handleSearchChange,
-    clearAllFilters,
-  } = useMenuLogic(products)
+  return {
+    title: `Shop All Products (${productCount}) - Tommy Hilfiger`,
+    description: `Browse our complete collection of ${productCount} premium Tommy Hilfiger products. Find the perfect fashion pieces with free shipping on orders over $100.`,
+    keywords: "Tommy Hilfiger, shop all, products, fashion, clothing, accessories, premium",
+    openGraph: {
+      title: `Shop All Products - Tommy Hilfiger`,
+      description: `Browse our complete collection of ${productCount} premium Tommy Hilfiger products.`,
+      type: "website",
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/menu`,
+      images: [
+        {
+          url: "/images/og-menu.jpg",
+          width: 1200,
+          height: 630,
+          alt: "Tommy Hilfiger Product Collection",
+        },
+      ],
+    },
+    robots: "index, follow",
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/menu`,
+    },
+  }
+}
 
-  // Split filtered products for main grid and recommended
-  const mainProducts = filteredProducts.slice(0, Math.ceil(filteredProducts.length / 2))
-  const recommendedProducts = filteredProducts.slice(Math.ceil(filteredProducts.length / 2))
+export default async function MenuPage() {
+  // Server-side data fetching for static generation
+  const [products, categories] = await Promise.all([getAllProductsServer(), getCategoriesServer()])
 
   return (
-    <>
-      {/* Main content container with consistent min-height to prevent layout shift */}
-      <div className="mx-8 min-h-[calc(100vh-200px)]">
-        <PageTitle />
+    <div className="mx-8 min-h-[calc(100vh-200px)]">
+      <PageTitle />
 
-        <SearchBar
-          searchQuery={searchQuery}
-          onSearchChange={handleSearchChange}
-          productCount={loading ? 0 : filteredProducts.length}
-        />
+      {/* Client-side wrapper for interactive features */}
+      <MenuClientWrapper initialProducts={products} categories={categories} />
 
-        <FilterButtons
-          onFilterClick={openFilterSidebar}
-          selectedCategories={selectedCategories}
-          onCategoryChange={handleCategoryChange}
-          productCount={loading ? 0 : filteredProducts.length}
-          selectedSort={selectedSortOption}
-          onSortChange={handleSortChange}
-        />
-
-        {/* Content area with consistent structure */}
-        {loading ? (
-          <ProductsLoading />
-        ) : error ? (
-          <ProductsError error={error} onRetry={refetch} />
-        ) : filteredProducts.length === 0 ? (
-          <div className="text-center py-12">
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No products found</h3>
-            <p className="text-gray-500">
-              {searchQuery
-                ? `No results found for "${searchQuery}". Try a different search term or check back later.`
-                : "Try selecting a different category or check back later."}
-            </p>
-          </div>
-        ) : (
-          <>
-            <ProductGrid
-              products={mainProducts}
-              visibleProducts={visibleProducts}
-              hoveredProductId={hoveredProductId}
-              currentImageIndices={currentImageIndices}
-              onHover={handleHover}
-              onImageChange={handleImageChange}
-              onQuickView={openQuickView}
-            />
-            {recommendedProducts.length > 0 && (
-              <RecommendedProducts
-                products={recommendedProducts}
-                hoveredProductId={hoveredProductId}
-                currentImageIndices={currentImageIndices}
-                onHover={handleHover}
-                onImageChange={handleImageChange}
-                onQuickView={openQuickView}
-              />
-            )}
-          </>
-        )}
-
-        <BrandDescription loading={loading} />
-        <BackToTop show={showBackToTop} />
-      </div>
-
-      <FilterSidebar
-        isOpen={isFilterSidebarOpen}
-        onClose={closeFilterSidebar}
-        activeFilter={activeFilter}
-        onCategoryChange={handleCategoryChange}
-        selectedCategories={selectedCategories}
-        onSizeChange={handleSizeChange}
-        selectedSizes={selectedSizes}
-        onPriceChange={handlePriceChange}
-        selectedPriceRanges={selectedPriceRanges}
-        onClearAll={clearAllFilters}
-      />
-      <ProductDetailQuickView isOpen={isQuickViewOpen} product={quickViewProduct} onClose={closeQuickView} />
-    </>
+      <BrandDescription />
+    </div>
   )
 }

@@ -7,12 +7,15 @@ import Image from "next/image"
 import { Search, ShoppingBag, User, Menu, X } from "lucide-react"
 import Link from "next/link"
 import { useRouter, usePathname } from "next/navigation"
+import { useCart } from "@/hooks/use-cart"
+import { CartSidebar } from "@/components/cart-sidebar"
 
 export function Header() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
+  const { state, openSidebar, closeSidebar } = useCart()
 
   const slides = [
     "40 - 70% Off Sitewide, Plus an Extra 25% Off $175+ or 15% Off $125+ for Hilfiger Club Members",
@@ -32,6 +35,11 @@ export function Header() {
   // Close sidebar when pathname changes (navigation occurs)
   useEffect(() => {
     setIsSidebarOpen(false)
+  }, [pathname])
+
+  // Scroll to top when pathname changes
+  useEffect(() => {
+    window.scrollTo(0, 0)
   }, [pathname])
 
   // Close sidebar on window resize to desktop size
@@ -61,14 +69,26 @@ export function Header() {
     }
   }, [isSidebarOpen])
 
-  const handleNewOrSaleClick = (e: React.MouseEvent) => {
+  const handleNewOrSaleClick = (e: React.MouseEvent, type: "new" | "sale") => {
     e.preventDefault()
-    router.push("/menu", { scroll: false })
+    const currentParams = new URLSearchParams(window.location.search)
+
+    // Preserve existing category if it exists
+    const category = currentParams.get("category")
+
+    // Build new URL with preserved category and new type
+    const newParams = new URLSearchParams()
+    if (category) {
+      newParams.set("category", category)
+    }
+    newParams.set("type", type)
+
+    router.push(`/menu?${newParams.toString()}`)
   }
 
   const handleSearchClick = (e: React.MouseEvent) => {
     e.preventDefault()
-    router.push("/menu", { scroll: false })
+    router.push("/menu")
     // Focus search field after navigation
     setTimeout(() => {
       const searchInput = document.querySelector('input[placeholder*="Search"]') as HTMLInputElement
@@ -82,10 +102,6 @@ export function Header() {
     setIsSidebarOpen((prev) => !prev)
   }
 
-  const closeSidebar = () => {
-    setIsSidebarOpen(false)
-  }
-
   return (
     <>
       {/* Promo Banner */}
@@ -97,16 +113,16 @@ export function Header() {
           <div className="py-1 min-w-full flex-shrink-0">
             {slides[0]}
             <span className="mx-2 font-medium">
-              <Link href="/menu?category=men" scroll={false} className="underline mx-1">
+              <Link href="/menu?category=men" className="underline mx-1">
                 Men
               </Link>
-              <Link href="/menu?category=women" scroll={false} className="underline mx-1">
+              <Link href="/menu?category=women" className="underline mx-1">
                 Women
               </Link>
-              <Link href="/menu" scroll={false} className="underline mx-1">
+              <Link href="/menu" className="underline mx-1">
                 Kids
               </Link>
-              <Link href="/menu" scroll={false} className="underline mx-1">
+              <Link href="/menu" className="underline mx-1">
                 Sale
               </Link>
             </span>
@@ -125,7 +141,7 @@ export function Header() {
         <div className="max-w-7xl mx-auto flex items-center justify-between relative">
           {/* Left Side - Logo */}
           <div className="flex items-center">
-            <Link href="/" scroll={false} className="flex items-center">
+            <Link href="/" className="flex items-center">
               {/* Desktop Logo */}
               <Image
                 src="/images/tommy-hilfiger-logo.svg"
@@ -150,34 +166,28 @@ export function Header() {
           {/* Center - Desktop Navigation */}
           <nav className="hidden md:flex items-center justify-center space-x-6 absolute left-1/2 transform -translate-x-1/2">
             <button
-              onClick={handleNewOrSaleClick}
+              onClick={(e) => handleNewOrSaleClick(e, "new")}
               className="text-sm font-medium hover:underline transition-all duration-200"
             >
               New
             </button>
-            <Link
-              href="/menu?category=men"
-              scroll={false}
-              className="text-sm font-medium hover:underline transition-all duration-200"
-            >
+            <Link href="/menu?category=men" className="text-sm font-medium hover:underline transition-all duration-200">
               Men
             </Link>
             <Link
               href="/menu?category=women"
-              scroll={false}
               className="text-sm font-medium hover:underline transition-all duration-200"
             >
               Women
             </Link>
             <Link
               href="/menu?category=accessories"
-              scroll={false}
               className="text-sm font-medium hover:underline transition-all duration-200"
             >
               Shoes & Accessories
             </Link>
             <button
-              onClick={handleNewOrSaleClick}
+              onClick={(e) => handleNewOrSaleClick(e, "sale")}
               className="text-sm font-medium hover:underline transition-all duration-200"
             >
               Sale
@@ -193,8 +203,13 @@ export function Header() {
             <button aria-label="Account" className="hidden md:block">
               <User className="h-5 w-5" />
             </button>
-            <button aria-label="Cart">
+            <button onClick={openSidebar} aria-label="Cart" className="relative">
               <ShoppingBag className="h-5 w-5" />
+              {state.itemCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {state.itemCount}
+                </span>
+              )}
             </button>
             {/* Burger menu only on mobile - shows Menu or X based on sidebar state */}
             <button
@@ -209,7 +224,7 @@ export function Header() {
       </header>
 
       {/* Mobile Sidebar Overlay */}
-      {isSidebarOpen && <div className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden" onClick={closeSidebar} />}
+      {isSidebarOpen && <div className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden" onClick={toggleSidebar} />}
 
       {/* Mobile Sidebar */}
       <div
@@ -228,7 +243,7 @@ export function Header() {
               className="h-8 w-8"
             />
             <button
-              onClick={closeSidebar}
+              onClick={toggleSidebar}
               aria-label="Close menu"
               className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
             >
@@ -240,8 +255,8 @@ export function Header() {
           <nav className="flex flex-col p-6 space-y-6">
             <button
               onClick={(e) => {
-                handleNewOrSaleClick(e)
-                closeSidebar()
+                handleNewOrSaleClick(e, "new")
+                toggleSidebar()
               }}
               className="text-lg font-medium text-left hover:text-gray-600 transition-colors duration-200"
             >
@@ -249,32 +264,29 @@ export function Header() {
             </button>
             <Link
               href="/menu?category=men"
-              scroll={false}
               className="text-lg font-medium hover:text-gray-600 transition-colors duration-200"
-              onClick={closeSidebar}
+              onClick={toggleSidebar}
             >
               Men
             </Link>
             <Link
               href="/menu?category=women"
-              scroll={false}
               className="text-lg font-medium hover:text-gray-600 transition-colors duration-200"
-              onClick={closeSidebar}
+              onClick={toggleSidebar}
             >
               Women
             </Link>
             <Link
               href="/menu?category=accessories"
-              scroll={false}
               className="text-lg font-medium hover:text-gray-600 transition-colors duration-200"
-              onClick={closeSidebar}
+              onClick={toggleSidebar}
             >
               Shoes & Accessories
             </Link>
             <button
               onClick={(e) => {
-                handleNewOrSaleClick(e)
-                closeSidebar()
+                handleNewOrSaleClick(e, "sale")
+                toggleSidebar()
               }}
               className="text-lg font-medium text-left hover:text-gray-600 transition-colors duration-200"
             >
@@ -287,7 +299,7 @@ export function Header() {
             <Link
               href="/account"
               className="flex items-center space-x-3 text-lg font-medium hover:text-gray-600 transition-colors duration-200"
-              onClick={closeSidebar}
+              onClick={toggleSidebar}
             >
               <User className="h-5 w-5" />
               <span>My Account</span>
@@ -295,6 +307,8 @@ export function Header() {
           </div>
         </div>
       </div>
+      {/* Cart Sidebar */}
+      <CartSidebar isOpen={state.isSidebarOpen} onClose={closeSidebar} />
     </>
   )
 }

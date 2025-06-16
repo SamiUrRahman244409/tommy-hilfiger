@@ -12,9 +12,9 @@ export const LANDING_MEDIA = {
   },
   video: {
     desktop: "video-section-md-video",
-    mobile: "video-section-sm-img", // This contains the video file
+    mobile: "video-section-sm-video", // Changed to get the actual video file
     posterDesktop: "video-section-md-img",
-    posterMobile: "video-section-sm-video", // This contains the poster image
+    posterMobile: "hero-section-sm", // Changed to use hero section image as poster
   },
   categoryNavigation: {
     dressShop: "category-navigation-1",

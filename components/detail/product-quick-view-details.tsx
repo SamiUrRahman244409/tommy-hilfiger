@@ -4,7 +4,6 @@ import type React from "react"
 
 import { X } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ProductColorSelector } from "./product-color-selector"
 import { ProductSizeSelector } from "./product-size-selector"
 import type { Product } from "@/types"
@@ -50,29 +49,6 @@ export function ProductQuickViewDetails({
       <ProductColorSelector />
 
       <ProductSizeSelector selectedSize={selectedSize} onSizeChange={onSizeChange} variant="sidebar" />
-
-      <div className="flex items-center space-x-2 mb-6">
-        <div className="w-24">
-          <Select defaultValue="1">
-            <SelectTrigger className="border-gray-300">
-              <div className="flex items-center">
-                <span className="mr-2">Qty</span>
-                <SelectValue />
-              </div>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="1">1</SelectItem>
-              <SelectItem value="2">2</SelectItem>
-              <SelectItem value="3">3</SelectItem>
-              <SelectItem value="4">4</SelectItem>
-              <SelectItem value="5">5</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <Button className="flex-1 bg-black text-white rounded-none hover:bg-gray-800">
-          Add To Bag - ${product.salePrice.toFixed(2)}
-        </Button>
-      </div>
 
       <Button variant="outline" className="w-full rounded-none mb-4 border-black">
         View Full Product Details

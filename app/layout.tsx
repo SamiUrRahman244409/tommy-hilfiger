@@ -1,8 +1,9 @@
 import type React from "react"
-import "@/app/globals.css"
-import type { Metadata, Viewport } from 'next'
+import type { Metadata } from "next"
+import "./globals.css"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { CartProvider } from "@/hooks/use-cart"
 
 export const metadata: Metadata = {
   title: "Tommy Hilfiger - Premium Fashion & Clothing | Official Store",
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
   },
   description:
     "Shop the latest Tommy Hilfiger collection. Premium fashion, clothing, and accessories for men, women, and kids. Free shipping on orders over $100.",
-  generator: 'v0.dev',
+  generator: "v0.dev",
   keywords: "Tommy Hilfiger, fashion, clothing, premium, men, women, kids, accessories, official store",
   authors: [{ name: "Tommy Hilfiger" }],
   robots: "index, follow",
@@ -29,13 +30,6 @@ export const metadata: Metadata = {
   },
 }
 
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 5,
-  userScalable: true,
-}
-
 export default function RootLayout({
   children,
 }: {
@@ -43,26 +37,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        {/* DNS prefetch for external domains */}
-        <link rel="dns-prefetch" href="//grounded-confidence-41a8f2f2aa.strapiapp.com" />
-        <link rel="dns-prefetch" href="//grounded-confidence-41a8f2f2aa.media.strapiapp.com" />
-        <link rel="dns-prefetch" href="//media.tommy.com" />
-        <link rel="dns-prefetch" href="//usa.tommy.com" />
-        {/* Preconnect to critical domains */}
-        <link rel="preconnect" href="https://grounded-confidence-41a8f2f2aa.strapiapp.com" />
-        <link rel="preconnect" href="https://grounded-confidence-41a8f2f2aa.media.strapiapp.com" />
-        <link rel="preconnect" href="https://media.tommy.com" />
-        {/* Preload removed to avoid early image loading */}
-      </head>
       <body className="antialiased">
-        <div className="min-h-screen flex flex-col">
-          <Header />
-          <main className="flex-1 relative">
-            {children}
-          </main>
-          <Footer />
-        </div>
+        <CartProvider>
+          <div className="min-h-screen flex flex-col">
+            <Header />
+            <main className="flex-1 relative">{children}</main>
+            <Footer />
+          </div>
+        </CartProvider>
       </body>
     </html>
   )

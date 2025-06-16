@@ -1,53 +1,92 @@
-"use client"
-
-import { useEffect, useState } from "react"
 import { HeroSection } from "@/components/landing/hero-section"
 import { FeaturedCollections } from "@/components/landing/featured-collections"
 import { VideoSection } from "@/components/landing/video-section"
 import { CategoryNavigation } from "@/components/landing/category-navigation"
-import { LandingSkeleton } from "@/components/landing/landing-skeleton"
+import { getAllProductsServer, getCategoriesServer, STATIC_REVALIDATE_TIME } from "@/lib/strapi-api"
+import type { Metadata } from "next"
 
-export default function HomePage() {
-  const [isLoading, setIsLoading] = useState(true)
-  const [showComponentLoading, setShowComponentLoading] = useState(false)
+// Static generation with revalidation
+export const revalidate = STATIC_REVALIDATE_TIME // 6 hours
 
-  useEffect(() => {
-    window.scrollTo(0, 0)
-
-    // First show skeleton
-    const skeletonTimer = setTimeout(() => {
-      setIsLoading(false)
-      setShowComponentLoading(true)
-    }, 1500)
-
-    // Then show component loading states
-    const componentTimer = setTimeout(() => {
-      setShowComponentLoading(false)
-    }, 3000)
-
-    return () => {
-      clearTimeout(skeletonTimer)
-      clearTimeout(componentTimer)
-    }
-  }, [])
-
-  if (isLoading) {
-    return <LandingSkeleton />
+// Generate metadata for SEO
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Tommy Hilfiger - Premium Fashion & Lifestyle",
+    description:
+      "Discover the latest Tommy Hilfiger collection. Shop premium fashion, accessories, and lifestyle products with free shipping on orders over $100.",
+    keywords: "Tommy Hilfiger, fashion, clothing, premium, lifestyle, accessories",
+    openGraph: {
+      title: "Tommy Hilfiger - Premium Fashion & Lifestyle",
+      description:
+        "Discover the latest Tommy Hilfiger collection. Shop premium fashion, accessories, and lifestyle products.",
+      type: "website",
+      url: process.env.NEXT_PUBLIC_SITE_URL || "https://your-domain.com",
+      images: [
+        {
+          url: "/placeholder.svg?height=630&width=1200",
+          width: 1200,
+          height: 630,
+          alt: "Tommy Hilfiger Homepage",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Tommy Hilfiger - Premium Fashion & Lifestyle",
+      description:
+        "Discover the latest Tommy Hilfiger collection. Shop premium fashion, accessories, and lifestyle products.",
+      images: ["/placeholder.svg?height=630&width=1200"],
+    },
+    robots: "index, follow",
+    alternates: {
+      canonical: process.env.NEXT_PUBLIC_SITE_URL || "https://your-domain.com",
+    },
   }
+}
+
+export default async function HomePage() {
+  // Server-side data fetching with error handling
+  let products: any[] = []
+  let categories: any[] = []
+
+  try {
+    console.log("Starting homepage data fetch...")
+    const [productsData, categoriesData] = await Promise.allSettled([getAllProductsServer(), getCategoriesServer()])
+
+    if (productsData.status === "fulfilled") {
+      products = productsData.value
+      console.log(`Homepage: Successfully loaded ${products.length} products`)
+    } else {
+      console.error("Homepage: Failed to load products:", productsData.reason)
+    }
+
+    if (categoriesData.status === "fulfilled") {
+      categories = categoriesData.value
+      console.log(`Homepage: Successfully loaded ${categories.length} categories`)
+    } else {
+      console.error("Homepage: Failed to load categories:", categoriesData.reason)
+    }
+  } catch (error) {
+    console.error("Homepage: Error during data fetching:", error)
+  }
+
+  // Pre-process data for components with fallbacks
+  const featuredProducts = products.slice(0, 8)
+  const heroProduct = products[0] || null
 
   return (
     <>
-      {/* 1 - Hero Section */}
-      <HeroSection isLoading={showComponentLoading} />
+      {/* Hero Section with fallback */}
+      <HeroSection product={heroProduct} />
 
-      {/* 2 - Featured Collections (First Two Sections) */}
-      <FeaturedCollections isLoading={showComponentLoading} />
+      {/* Featured Collections with fallback */}
+      <FeaturedCollections products={featuredProducts} />
 
-      {/* 1 - Video Section */}
-      <VideoSection isLoading={showComponentLoading} />
+      {/* Video Section - always static */}
+      <VideoSection />
 
-      {/* 4 - Category Navigation */}
-      <CategoryNavigation isLoading={showComponentLoading} />
+      {/* Category Navigation with fallback */}
+      <CategoryNavigation categories={categories} />
     </>
   )
 }

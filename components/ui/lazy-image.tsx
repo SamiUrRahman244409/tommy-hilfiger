@@ -115,7 +115,7 @@ export function LazyImage({
             sizes={sizes}
             quality={quality}
             className={cn(
-              "transition-opacity duration-300 ease-in-out",
+              "transition-opacity duration-300 ease-in-out leading-[.75rem]",
               isLoaded ? "opacity-100" : "opacity-0",
               fill ? "object-cover" : "w-full h-full object-cover",
             )}

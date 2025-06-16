@@ -42,11 +42,20 @@ interface StrapiMediaResponse {
   }
 }
 
-const STRAPI_BASE_URL = "https://motivated-purpose-8fc925db97.strapiapp.com"
+const STRAPI_BASE_URL = "https://grateful-action-a3c4ebca24.strapiapp.com"
 
 export async function fetchMediaAssets(): Promise<StrapiMediaGroup[]> {
   try {
-    const response = await fetch(`${STRAPI_BASE_URL}/api/medias/?populate=*`, {
+    // Only populate the fields we actually use for media
+    const populateQuery = [
+      "populate[Media][fields][0]=url",
+      "populate[Media][fields][1]=formats",
+      "populate[Media][fields][2]=mime",
+      "populate[Media][fields][3]=alternativeText",
+      "fields[0]=Name",
+    ].join("&")
+
+    const response = await fetch(`${STRAPI_BASE_URL}/api/medias/?${populateQuery}`, {
       next: { revalidate: 3600 }, // Cache for 1 hour
     })
 

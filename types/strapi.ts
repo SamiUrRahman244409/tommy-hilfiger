@@ -50,13 +50,21 @@ export interface StrapiCategory {
   publishedAt: string
 }
 
+// Enhanced SEO interface with Open Graph and Twitter data
 export interface StrapiSEO {
   id: number
   metaTitle: string
   metaDescription: string
   keywords: string
-  openGraphTitle: string
-  openGraphDescription: string
+  openGraphTitle?: string
+  openGraphDescription?: string
+  openGraphImage?: StrapiImage
+  twitterTitle?: string
+  twitterDescription?: string
+  twitterImage?: StrapiImage
+  canonicalUrl?: string
+  robots?: string
+  structuredData?: string
 }
 
 export interface StrapiProductSize {
