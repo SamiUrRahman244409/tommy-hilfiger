@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import { STATIC_REVALIDATE_TIME } from "@/lib/strapi-api"
 
 // Static generation with revalidation
-export const revalidate = STATIC_REVALIDATE_TIME // 6 hours
+export const revalidate = 21600 // 6 hours in seconds
 
 // Generate metadata for cart page
 export async function generateMetadata(): Promise<Metadata> {

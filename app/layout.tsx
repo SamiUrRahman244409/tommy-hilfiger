@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer"
 import { CartProvider } from "@/hooks/use-cart"
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
   title: "Tommy Hilfiger - Premium Fashion & Clothing | Official Store",
   icons: {
     icon: "/favicon.svg",

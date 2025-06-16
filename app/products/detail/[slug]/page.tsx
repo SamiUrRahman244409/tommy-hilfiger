@@ -9,7 +9,7 @@ import type { Metadata } from "next"
 import ProductDetailPageClient from "./ProductDetailPageClient"
 
 // Static generation with revalidation
-export const revalidate = STATIC_REVALIDATE_TIME // 6 hours
+export const revalidate = 21600 // 6 hours in seconds
 
 // Generate static params for all product pages
 export async function generateStaticParams() {
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     openGraph: {
       title: seo?.openGraph?.title || product.name,
       description: seo?.openGraph?.description || product.description,
-      type: "product",
+      type: "website",
       url: `${process.env.NEXT_PUBLIC_SITE_URL}/products/detail/${product.slug}`,
       images: [
         {

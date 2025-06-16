@@ -23,12 +23,8 @@ const nextConfig = {
   // Experimental features for static generation
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
-    // Enable static generation optimizations
-    staticWorkerRequestDeduping: true,
     // Optimize CSS
     optimizeCss: true,
-    // Enable parallel builds
-    parallelServerBuildTraces: true,
   },
   // Enhanced cache headers for static assets
   async headers() {

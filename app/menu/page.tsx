@@ -5,7 +5,7 @@ import { MenuClientWrapper } from "@/components/menu/menu-client-wrapper"
 import type { Metadata } from "next"
 
 // Static generation with revalidation
-export const revalidate = STATIC_REVALIDATE_TIME // 6 hours
+export const revalidate = 21600 // 6 hours in seconds
 
 // Generate metadata for menu page
 export async function generateMetadata(): Promise<Metadata> {
