@@ -15,7 +15,8 @@ const nextConfig = {
       'grateful-action-a3c4ebca24.strapiapp.com',
       'res.cloudinary.com',
       'images.unsplash.com',
-      'via.placeholder.com'
+      'via.placeholder.com',
+      'shoptommy.scene7.com'
     ],
   },
   // Enable compression
@@ -30,39 +31,11 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/_next/static/:path*',
+        source: '/:path*',
         headers: [
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        source: '/images/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        source: '/:path*.{jpg,jpeg,png,gif,ico,svg,webp,avif}',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      // Cache static pages
-      {
-        source: '/((?!api|_next/static|_next/image|favicon.ico).*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=21600, s-maxage=21600, stale-while-revalidate=86400',
           },
         ],
       },
@@ -74,29 +47,11 @@ const nextConfig = {
   swcMinify: true,
   // Static generation optimizations
   webpack: (config, { dev, isServer }) => {
-    // Production optimizations
-    if (!dev) {
-      // Optimize bundle splitting
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-          },
-          common: {
-            name: 'common',
-            minChunks: 2,
-            chunks: 'all',
-            enforce: true,
-          },
-        },
-      }
-
-      // Optimize for static generation
-      if (isServer) {
-        config.optimization.concatenateModules = true
+    // Optimize production builds
+    if (!dev && !isServer) {
+      config.optimization = {
+        ...config.optimization,
+        minimize: true,
       }
     }
     return config
@@ -110,6 +65,8 @@ const nextConfig = {
       },
     ]
   },
+  // Enable static exports
+  output: 'standalone',
 }
 
 export default nextConfig
