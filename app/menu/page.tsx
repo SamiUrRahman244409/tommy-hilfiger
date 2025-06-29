@@ -1,10 +1,10 @@
 import { PageTitle } from "@/components/menu/page-title"
 import { BrandDescription } from "@/components/menu/brand-description"
-import { getAllProductsServer, getCategoriesServer, STATIC_REVALIDATE_TIME } from "@/lib/strapi-api"
+import { getAllProductsServer, getCategoriesServer } from "@/lib/strapi-api"
 import { MenuClientWrapper } from "@/components/menu/menu-client-wrapper"
 import type { Metadata } from "next"
 
-// Static generation with revalidation
+// Static generation with revalidation - this is the key for SSG
 export const revalidate = 21600 // 6 hours in seconds
 
 // Generate metadata for menu page
@@ -37,8 +37,9 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
+// This is now a static page that gets pre-generated at build time
 export default async function MenuPage() {
-  // Server-side data fetching for static generation
+  // Server-side data fetching for static generation - runs at build time
   const [products, categories] = await Promise.all([getAllProductsServer(), getCategoriesServer()])
 
   return (

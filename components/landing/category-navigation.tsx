@@ -19,6 +19,7 @@ export function CategoryNavigation({ isLoading = false }: CategoryNavigationProp
     async function loadMedia() {
       try {
         const assets = await fetchMediaAssets()
+        console.log("Category navigation loaded media assets:", assets)
         setMediaAssets(assets)
       } catch (error) {
         console.error("Failed to load media assets:", error)
@@ -34,6 +35,8 @@ export function CategoryNavigation({ isLoading = false }: CategoryNavigationProp
   const logoShopImage = getImageByName(mediaAssets, LANDING_MEDIA.categoryNavigation.logoShop)
   const butterYellowImage = getImageByName(mediaAssets, LANDING_MEDIA.categoryNavigation.butterYellow)
   const tommyStoriesImage = getImageByName(mediaAssets, LANDING_MEDIA.categoryNavigation.tommyStories)
+
+  console.log("Category navigation images:", { dressShopImage, logoShopImage, butterYellowImage, tommyStoriesImage })
 
   if (isLoading || isMediaLoading) {
     return (

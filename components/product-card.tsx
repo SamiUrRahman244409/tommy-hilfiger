@@ -27,11 +27,6 @@ export function ProductCard({ product, onClick }: ProductCardProps) {
           height={300}
           className="w-full h-auto"
         />
-        {isHovered && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 transition-opacity duration-200">
-            <div className="text-center py-2 px-4 font-medium bg-white bg-opacity-80 w-full">Quick View</div>
-          </div>
-        )}
       </div>
       <p className="mt-2 text-sm">{product.name}</p>
       <div className="flex items-center space-x-2 text-sm">

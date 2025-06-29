@@ -42,31 +42,42 @@ interface StrapiMediaResponse {
   }
 }
 
-const STRAPI_BASE_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL
+// Updated API URL with the new endpoint
+const STRAPI_BASE_URL = "https://grateful-action-a3c4ebca24.strapiapp.com"
 
 export async function fetchMediaAssets(): Promise<StrapiMediaGroup[]> {
   try {
-    // Only populate the fields we actually use for media
+    // Fetch from the medias endpoint with proper population
     const populateQuery = [
       "populate[Media][fields][0]=url",
       "populate[Media][fields][1]=formats",
       "populate[Media][fields][2]=mime",
       "populate[Media][fields][3]=alternativeText",
+      "populate[Media][fields][4]=name",
       "fields[0]=Name",
     ].join("&")
 
-    const response = await fetch(`${STRAPI_BASE_URL}/api/medias/?${populateQuery}`, {
-      next: { revalidate: 3600 }, // Cache for 1 hour
+    const response = await fetch(`${STRAPI_BASE_URL}/api/medias?${populateQuery}`, {
+      next: { revalidate: 21600 }, // Cache for 6 hours
     })
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch media: ${response.status}`)
+      console.warn(`Failed to fetch media: ${response.status} ${response.statusText}`)
+      return []
+    }
+
+    // Check if response is JSON
+    const contentType = response.headers.get("content-type") ?? ""
+    if (!contentType.includes("application/json")) {
+      console.warn("Received non-JSON response from media API")
+      return []
     }
 
     const data: StrapiMediaResponse = await response.json()
-    return data.data
+    console.log("Media API response:", data)
+    return data.data || []
   } catch (error) {
-    console.error("Error fetching media assets:", error)
+    console.warn("Error fetching media assets:", error)
     return []
   }
 }

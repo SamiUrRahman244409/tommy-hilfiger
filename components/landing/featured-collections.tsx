@@ -20,6 +20,7 @@ export function FeaturedCollections({ isLoading = false }: FeaturedCollectionsPr
     async function loadMedia() {
       try {
         const assets = await fetchMediaAssets()
+        console.log("Featured collections loaded media assets:", assets)
         setMediaAssets(assets)
       } catch (error) {
         console.error("Failed to load media assets:", error)
@@ -35,6 +36,8 @@ export function FeaturedCollections({ isLoading = false }: FeaturedCollectionsPr
   const grid03_02 = getImageByName(mediaAssets, LANDING_MEDIA.featuredCollections.grid03_02)
   const grid04_01 = getImageByName(mediaAssets, LANDING_MEDIA.featuredCollections.grid04_01)
   const grid04_02 = getImageByName(mediaAssets, LANDING_MEDIA.featuredCollections.grid04_02)
+
+  console.log("Featured collection images:", { grid03_01, grid03_02, grid04_01, grid04_02 })
 
   if (isLoading || isMediaLoading) {
     return (
@@ -65,7 +68,7 @@ export function FeaturedCollections({ isLoading = false }: FeaturedCollectionsPr
             alt="Woman with curly blonde hair wearing white linen shirt"
             width={1200}
             height={1500}
-            className="w-full h-full"
+            className="w-full h-full object-cover"
             fill
           />
           <div className="absolute bottom-10 right-10 text-white">
@@ -88,7 +91,7 @@ export function FeaturedCollections({ isLoading = false }: FeaturedCollectionsPr
             alt="Man with curly dark hair wearing cream polo shirt in red convertible"
             width={1200}
             height={1500}
-            className="w-full h-full"
+            className="w-full h-full object-cover"
             fill
           />
           <div className="absolute bottom-10 left-10 text-white text-right">
@@ -122,7 +125,7 @@ export function FeaturedCollections({ isLoading = false }: FeaturedCollectionsPr
             alt="Two models on a boardwalk by the ocean wearing white shorts"
             width={1200}
             height={1500}
-            className="w-full h-full"
+            className="w-full h-full object-cover"
             fill
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center">
@@ -160,7 +163,7 @@ export function FeaturedCollections({ isLoading = false }: FeaturedCollectionsPr
             alt="Woman in navy striped swimsuit with white shorts on a beach"
             width={1200}
             height={1500}
-            className="w-full h-full"
+            className="w-full h-full object-cover"
             fill
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center">

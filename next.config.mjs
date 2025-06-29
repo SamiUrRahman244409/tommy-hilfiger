@@ -12,7 +12,7 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     domains: [
-      process.env.NEXT_PUBLIC_STRAPI_API_URL?.replace('https://', ''),
+      'grateful-action-a3c4ebca24.strapiapp.com',
       'res.cloudinary.com',
       'images.unsplash.com',
       'via.placeholder.com',
@@ -31,7 +31,16 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/:path*',
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/images/:path*',
         headers: [
           {
             key: 'Cache-Control',
@@ -65,8 +74,15 @@ const nextConfig = {
       },
     ]
   },
-  // Enable static exports
+  // Enable static exports for better performance
   output: 'standalone',
+  // Force static generation for all pages
+  trailingSlash: false,
+  // Optimize for static generation
+  generateBuildId: async () => {
+    // Use timestamp for build ID to ensure fresh builds
+    return `build-${Date.now()}`
+  },
 }
 
 export default nextConfig

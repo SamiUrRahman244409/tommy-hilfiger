@@ -20,6 +20,7 @@ export function HeroSection({ isLoading = false }: HeroSectionProps) {
     async function loadMedia() {
       try {
         const assets = await fetchMediaAssets()
+        console.log("Hero section loaded media assets:", assets)
         setMediaAssets(assets)
       } catch (error) {
         console.error("Failed to load media assets:", error)
@@ -34,10 +35,21 @@ export function HeroSection({ isLoading = false }: HeroSectionProps) {
   const desktopImage = getImageByName(mediaAssets, LANDING_MEDIA.hero.desktop)
   const mobileImage = getImageByName(mediaAssets, LANDING_MEDIA.hero.mobile)
 
+  console.log("Hero images:", { desktopImage, mobileImage })
+
   if (isLoading || isMediaLoading) {
     return (
       <section className="relative w-full h-screen mb-1">
         <div className="w-full h-full bg-gray-200 animate-pulse" />
+        <div className="absolute inset-x-0 top-0 pt-4 md:pt-4 flex flex-col items-center text-white text-center max-w-md mx-auto">
+          <div className="h-6 w-48 bg-gray-300 animate-pulse rounded mb-4" />
+          <div className="h-8 w-64 bg-gray-300 animate-pulse rounded mb-6" />
+          <div className="flex gap-4">
+            <div className="h-10 w-24 bg-gray-300 animate-pulse rounded" />
+            <div className="h-10 w-24 bg-gray-300 animate-pulse rounded" />
+            <div className="h-10 w-24 bg-gray-300 animate-pulse rounded" />
+          </div>
+        </div>
       </section>
     )
   }
@@ -54,7 +66,7 @@ export function HeroSection({ isLoading = false }: HeroSectionProps) {
           aspectRatio="16/9"
           priority
           fill
-          className="w-full h-full"
+          className="w-full h-full object-cover"
         />
       </div>
 
@@ -68,7 +80,7 @@ export function HeroSection({ isLoading = false }: HeroSectionProps) {
           aspectRatio="16/9"
           priority
           fill
-          className="w-full h-full"
+          className="w-full h-full object-cover"
         />
       </div>
 

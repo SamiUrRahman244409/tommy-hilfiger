@@ -1,17 +1,12 @@
-import {
-  getProductBySlugServer,
-  getAllProductSlugs,
-  getAllProductsServer,
-  STATIC_REVALIDATE_TIME,
-} from "@/lib/strapi-api"
+import { getProductBySlugServer, getAllProductSlugs, getAllProductsServer } from "@/lib/strapi-api"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import ProductDetailPageClient from "./ProductDetailPageClient"
 
-// Static generation with revalidation
+// Static generation with revalidation - this is the key for SSG
 export const revalidate = 21600 // 6 hours in seconds
 
-// Generate static params for all product pages
+// Generate static params for all product pages - this enables SSG for dynamic routes
 export async function generateStaticParams() {
   const slugs = await getAllProductSlugs()
 
@@ -72,8 +67,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
+// This is now a static page that gets pre-generated at build time for each product
 export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
-  // Server-side data fetching for static generation
+  // Server-side data fetching for static generation - runs at build time
   const [product, allProducts] = await Promise.all([getProductBySlugServer(params.slug), getAllProductsServer()])
 
   if (!product) {

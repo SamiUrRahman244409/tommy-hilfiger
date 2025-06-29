@@ -2,10 +2,10 @@ import { HeroSection } from "@/components/landing/hero-section"
 import { FeaturedCollections } from "@/components/landing/featured-collections"
 import { VideoSection } from "@/components/landing/video-section"
 import { CategoryNavigation } from "@/components/landing/category-navigation"
-import { getAllProductsServer, getCategoriesServer, STATIC_REVALIDATE_TIME } from "@/lib/strapi-api"
+import { getAllProductsServer, getCategoriesServer } from "@/lib/strapi-api"
 import type { Metadata } from "next"
 
-// Static generation with revalidation
+// Static generation with revalidation - this is the key for SSG
 export const revalidate = 21600 // 6 hours in seconds
 
 // Generate metadata for SEO
@@ -44,30 +44,31 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
+// This is now a static page that gets pre-generated at build time
 export default async function HomePage() {
-  // Server-side data fetching with error handling
+  // Server-side data fetching for static generation - runs at build time
   let products: any[] = []
   let categories: any[] = []
 
   try {
-    console.log("Starting homepage data fetch...")
+    console.log("Starting homepage data fetch for static generation...")
     const [productsData, categoriesData] = await Promise.allSettled([getAllProductsServer(), getCategoriesServer()])
 
     if (productsData.status === "fulfilled") {
       products = productsData.value
-      console.log(`Homepage: Successfully loaded ${products.length} products`)
+      console.log(`Homepage: Successfully loaded ${products.length} products for static generation`)
     } else {
       console.error("Homepage: Failed to load products:", productsData.reason)
     }
 
     if (categoriesData.status === "fulfilled") {
       categories = categoriesData.value
-      console.log(`Homepage: Successfully loaded ${categories.length} categories`)
+      console.log(`Homepage: Successfully loaded ${categories.length} categories for static generation`)
     } else {
       console.error("Homepage: Failed to load categories:", categoriesData.reason)
     }
   } catch (error) {
-    console.error("Homepage: Error during data fetching:", error)
+    console.error("Homepage: Error during static data fetching:", error)
   }
 
   // Pre-process data for components with fallbacks

@@ -13,7 +13,7 @@ interface ProductCardProps {
   currentImageIndices: Record<number, number>
   onHover: (id: number | null) => void
   onImageChange: (id: number, direction: "prev" | "next", e: React.MouseEvent, images: string[]) => void
-  onQuickView: (product: Product) => void
+  onQuickView?: (product: Product) => void
 }
 
 export function ProductCard({
@@ -22,7 +22,7 @@ export function ProductCard({
   currentImageIndices,
   onHover,
   onImageChange,
-  onQuickView,
+  onQuickView = () => {},
 }: ProductCardProps) {
   const router = useRouter()
   const productIndex = currentImageIndices[product.id] || 0
@@ -72,7 +72,7 @@ export function ProductCard({
   const handleQuickView = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    onQuickView(product)
+    onQuickView?.(product)
   }
 
   const handleImageNavigation = (direction: "prev" | "next", e: React.MouseEvent) => {

@@ -1,8 +1,7 @@
 import { CartPageClient } from "./cart-page-client"
 import type { Metadata } from "next"
-import { STATIC_REVALIDATE_TIME } from "@/lib/strapi-api"
 
-// Static generation with revalidation
+// Static generation with revalidation - this is the key for SSG
 export const revalidate = 21600 // 6 hours in seconds
 
 // Generate metadata for cart page
@@ -21,6 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
+// This is now a static page that gets pre-generated at build time
 export default function CartPage() {
   return <CartPageClient />
 }
