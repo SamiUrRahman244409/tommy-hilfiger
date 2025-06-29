@@ -24,8 +24,6 @@ const nextConfig = {
   // Experimental features for static generation
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
-    // Optimize CSS
-    optimizeCss: true,
   },
   // Enhanced cache headers for static assets
   async headers() {
@@ -52,8 +50,6 @@ const nextConfig = {
   },
   // Disable powered by header for security
   poweredByHeader: false,
-  // Enable SWC minification
-  swcMinify: true,
   // Static generation optimizations
   webpack: (config, { dev, isServer }) => {
     // Optimize production builds
@@ -74,15 +70,9 @@ const nextConfig = {
       },
     ]
   },
-  // Enable static exports for better performance
+  // Enable static generation
   output: 'standalone',
-  // Force static generation for all pages
   trailingSlash: false,
-  // Optimize for static generation
-  generateBuildId: async () => {
-    // Use timestamp for build ID to ensure fresh builds
-    return `build-${Date.now()}`
-  },
 }
 
 export default nextConfig

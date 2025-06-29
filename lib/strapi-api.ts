@@ -6,8 +6,8 @@ const STRAPI_BASE_URL = "https://grateful-action-a3c4ebca24.strapiapp.com"
 const STRAPI_API_URL = `${STRAPI_BASE_URL}/api`
 const STRAPI_API_TOKEN = process.env.STRAPI_API_TOKEN
 
-// Static generation configuration - 6 hours revalidation
-export const STATIC_REVALIDATE_TIME = 21600 // 6 hours in seconds
+// Static generation configuration - 12 hours revalidation
+export const STATIC_REVALIDATE_TIME = 43200 // 12 hours in seconds
 
 export class StrapiApiError extends Error {
   constructor(
@@ -38,7 +38,7 @@ async function serverFetch(url: string, options: RequestInit = {}) {
       headers,
       // Force static generation with revalidation
       next: {
-        revalidate: STATIC_REVALIDATE_TIME, // 6 hours
+        revalidate: STATIC_REVALIDATE_TIME, // 12 hours
         tags: ["products", "strapi"],
       },
     })
